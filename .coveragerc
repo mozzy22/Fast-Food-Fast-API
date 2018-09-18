@@ -1,15 +1,16 @@
 [report]
 omit =
-*/python?.?/*
-*/site-packages/nose/*
-*/__pycache__/*
-*/.pyc
-*/.pytest_cache/*
-*/app/python?.?/*
-*/app/site-packages/nose/*
-*/app/__pycache__/*
-*/app/.pyc
-*/app/.pytest_cache/*
-*/tests/__pycache__/*
-*/tests/.pytest_cache/*
-*/.idea/*
+    */python?.?/*
+    */site-packages/nose/*
+    */__pycache__/*
+    */.pyc
+    */.pytest_cache/*
+    */app/python?.?/*
+    */app/site-packages/nose/*
+    */app/__pycache__/*
+    */app/.pyc
+    */app/.pytest_cache/*
+    */tests/__pycache__/*
+    */tests/.pytest_cache/*
+    */.idea/*
+    */.vscode/**
