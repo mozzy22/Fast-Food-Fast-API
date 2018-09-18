@@ -21,5 +21,7 @@ config/__pycache__/
 tests/__pycache__/
 app/models/__pycache__/
 app/views/__pycache__/
+.coverage
+
 
 
