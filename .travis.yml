@@ -8,7 +8,7 @@ install:
 
 # command to run tests
 script:
-   - nosetests  --with-coverage --cover-package=tests
+   - pytest -v --cov app --cov-report term-missing
 
 
 after_success:
