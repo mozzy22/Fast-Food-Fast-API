@@ -8,7 +8,7 @@ install:
 
 # command to run tests
 script:
-   - nosetests  --with-coverage --cover-package=tests
+   -py.test —cov
 
 
 after_success:
