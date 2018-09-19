@@ -14,9 +14,8 @@ class Test_Case(unittest.TestCase):
         self.order = {
             "order_id" : 1,
             "order_uuid" : "essssss",
-             "order_food" : "pizza",
+             "order_food_id" : 1,
             "order_quantity" : "1",
-             "order_price" : "2000",
             "order_created_at" : "13/04/2016",
             "order_status" : "pendng",
             "order_client" :"mutesasira"
@@ -35,10 +34,6 @@ class Test_Case(unittest.TestCase):
         self.order_obj1.orders_list.append(self.order)
         self.assertEqual(len(self.order_obj1.get_all_orders()), 1)
 
-    def test_wrong_method(self):
-        resp = self.app.post(self.hostname + "orders", data = self.order)
-        self.assertEqual(resp.status_code, 405)
-
     def test_right_get_method(self):
         "asserting a correct method returns an empty response"
         resp = self.app.get(self.hostname + "orders")
@@ -46,7 +41,7 @@ class Test_Case(unittest.TestCase):
 
     def test_return_message(self):
         resp = self.app.get(self.hostname + "orders")
-        self.assertIn("empty result list", str(resp.data))
+        self.assertIn("Message\": \"Empty order list", str(resp.data))
 
     def test_right_get_method(self):
         "asserting a correct method returns an  response with data"
