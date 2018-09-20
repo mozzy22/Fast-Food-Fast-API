@@ -134,6 +134,17 @@ class Orders:
 
         return exist
 
+    def fetch_order_by_uuid(self, order_uuid):
+        "A method to fetch a specific order"
+        my_order = {}
+        for order in self.orders_list:
+            if order["order_uuid"] == order_uuid:
+                my_order = order
+                break
+            else:
+                pass
+        return my_order
+
 # if __name__ == "__main__":
 #     a = Orders()
     #a.check_existing_food_id(4)
