@@ -10,7 +10,7 @@ class Orders:
 # declaring status constants
     STATUS1 = "Pending"
     STATUS2 = "Accepted"
-    STATUS3 = "Rejcted"
+    STATUS3 = "Rejected"
     STATUS4 = "Completed"
 
     def __init__(self):

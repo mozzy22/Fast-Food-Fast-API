@@ -154,19 +154,21 @@ def update_order_status(order_uuid):
     updated_order = {}
     if request.data:
         new_status_obj = request.json
+        #validating status object
         if ("order_status" in new_status_obj):
             new_status = new_status_obj["order_status"]
+            #validating a valid status
             if new_status in ["ok", "yes" , "no"]:
                  updated_order = order_obj.update_order_status(order_uuid,new_status)
                  if updated_order :
-                     return jsonify("SUCCESFULLY UPDATED ORDER STATUS",updated_order)
+                     return jsonify("SUCCESFULLY UPDATED ORDER STATUS",updated_order),202
                  else:
-                     return jsonify({"Message" : "Oder UUID requested doesnt exist"})
+                     return jsonify({"Message" : "Oder UUID requested doesnt exist"}), 406
 
             else:
-                return jsonify({"ERROR" : "Unknown status. staus must be in [ok, yes, no]"})
+                return jsonify({"ERROR" : "Unknown status. staus must be in [ok, yes, no]"}), 406
         else:
-            return jsonify({"Invalid status object" : "status should be {'order_status': status}"})
+            return jsonify({"Invalid status object" : "status should be {'order_status': status}"}), 406
     else:
         return jsonify({"ERROR": "Empty status update content"}), 200
 
