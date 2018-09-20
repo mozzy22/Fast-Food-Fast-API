@@ -43,7 +43,7 @@ class Test_Case(unittest.TestCase):
         resp = self.app.get(self.hostname + "orders")
         self.assertIn("Message\": \"Empty order list", str(resp.data))
 
-    def test_right_get_method(self):
+    def test_right_get_method2(self):
         "asserting a correct method returns an  response with data"
         order_obj.orders_list.append(self.order)
         resp = self.app.get(self.hostname + "orders")
@@ -53,6 +53,11 @@ class Test_Case(unittest.TestCase):
         order_obj.orders_list.append(self.order)
         resp = self.app.get(self.hostname + "orders")
         self.assertIn('mutesasira', str(resp.data))
+
+    def test_index(self):
+        resp = self.app.get()
+        self.assertEqual(resp.status_code, 202)
+
 
     def tearDown(self):
          order_obj.orders_list.clear()

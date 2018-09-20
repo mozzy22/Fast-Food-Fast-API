@@ -172,6 +172,26 @@ def update_order_status(order_uuid):
     else:
         return jsonify({"ERROR": "Empty status update content"}), 200
 
+#A function to act as index page , to offer description to the user
+@My_app.route('/', methods=['GET'])
+def index():
+    return   jsonify( " WELCOME TO THE FAST-FOOD-FAST  API",
+        "Fast-Food-Fast is a food delivery service app for a restaurant",
+         "See the  Features and their endpoints",
+         {
+          "Get all orders" : "GET, api/v1/orders",
+           "Place anew order " :"POST ,  api/v1/orders",
+            "Fetch a specific order" : "GET , api/v1/orders/oder-uuid",
+            "Update an order status" : "PUT, api/v1/orders/order-uuid",
+            "Fetch all food items on the menu" : "GET, api/v1/menu",
+            "Add food item to menu" : "POST, api/v1/menu/add ",
+            "Index page" : " GET  ,/",
+        },
+            "WISH YOU ALL THE BEST AS YOU DINE WITH US"
+    ), 202
+
+
+
 
 
 
