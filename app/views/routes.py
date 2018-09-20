@@ -16,9 +16,9 @@ order_obj = Orders()
 def get_all_orders():
     "A function to fetch all orders"
     if order_obj.get_all_orders():
-        return jsonify(order_obj.get_all_orders()), 200
+        return jsonify(order_obj.get_all_orders()), 202
     else:
-        return jsonify({"Message" :"Empty order list"}), 404
+        return jsonify({"Message" :"Empty order list"}), 200
 
 #A function to place_order
 @My_app.route('/api/v1/orders', methods=['POST'])
@@ -54,9 +54,9 @@ def place_order():
                             message2 = {"Error" : "Food_id requested doesnt exist ",
                                         "Available food list" : order_obj.food_list
                                       }
-                            return jsonify(message2), 404
+                            return jsonify(message2), 200
                     else:
-                        return jsonify({"Empty food list" : "contact Admin to add food items"}), 404
+                        return jsonify({"Empty food list" : "contact Admin to add food items"}), 200
 
             else:
                 #checking empty food list
@@ -64,25 +64,71 @@ def place_order():
                     # checking whethr posted food id exists in the menu
                     if order_obj.check_existing_food_by_id(order_food_id):
                         order_obj.place_order(order_food_id, order_quantity, order_client)
-                        return jsonify({"Order created succesfulyy":order_obj.orders_list},
+                        return jsonify({"Order created succesfuly":order_obj.orders_list},
                                        {"Available food list": order_obj.food_list}), 201
 
                     else:
                         message3 = {"Error": "Food_id requested doesnt exist ",
                                     "Available food list": order_obj.food_list
                                     }
-                        return jsonify(message3), 404
+                        return jsonify(message3), 200
                 else:
-                    return jsonify({"Empty food list": "contact Admin to add food items"}), 404
+                    return jsonify({"Empty food list": "contact Admin to add food items"}), 200
 
 
 
         else:
             message2 = {"ERROR" : "invalid order object",
-                        "Help" : "order object should be in "
+                        "Help" : "order object should be  "
                                  "{'order_food_id' : id ,'order_quantity': qty, 'order_client':name}"}
 
             return jsonify(message2), 406
 
     else:
         return jsonify({"ERROR" : "Empty order posted"}), 406
+
+
+#A function for admin to add food items to the menu
+@My_app.route('/api/v1/menu/add', methods=['POST'])
+def add_food_iems():
+    "A function that adds food items"
+    #checking empty response content
+    if request.data:
+        new_food = request.json
+
+        #validating food object
+        if order_obj.validate_food_obj(new_food):
+            food_name = new_food["food_name"]
+            food_price = new_food["food_price"]
+
+            if order_obj.food_list:
+                # check whether food item exists
+                if order_obj.check_existing_food_by_name(food_name):
+                    return jsonify({"ERROR": "Food item already exists"}), 406
+                else:
+                    order_obj.add_food(food_name, food_price)
+                    return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
+
+            else:
+                    order_obj.add_food(food_name, food_price)
+                    return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
+
+        else:
+            message2 = {"ERROR": "invalid food object",
+                            "Help": "food object should be {'food_name' : name ,'food_price': price}"}
+            return jsonify(message2), 406
+
+
+    else:
+        return jsonify({"ERROR": "Empty food content"}), 200
+
+#a function to fetch all foods list by admin
+@My_app.route('/api/v1/menu', methods=['GET'])
+def get_all_foodslist() :
+     "A function to fetch all menu food items"
+
+     #checking whethr menu list is empty
+     if order_obj.food_list:
+         return jsonify(order_obj.get_all_foods()), 202
+     else:
+         return jsonify({"Empty menu" : "Please add foods list "}), 200

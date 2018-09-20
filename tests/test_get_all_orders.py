@@ -37,7 +37,7 @@ class Test_Case(unittest.TestCase):
     def test_right_get_method(self):
         "asserting a correct method returns an empty response"
         resp = self.app.get(self.hostname + "orders")
-        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.status_code, 200)
 
     def test_return_message(self):
         resp = self.app.get(self.hostname + "orders")
@@ -47,7 +47,7 @@ class Test_Case(unittest.TestCase):
         "asserting a correct method returns an  response with data"
         order_obj.orders_list.append(self.order)
         resp = self.app.get(self.hostname + "orders")
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 202)
 
     def test_return_data(self):
         order_obj.orders_list.append(self.order)
