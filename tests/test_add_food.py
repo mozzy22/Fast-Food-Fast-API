@@ -1,11 +1,12 @@
+"A module for testing the add food feature"
 import unittest
 import json
 from app.views.routes import My_app
 from app.views.routes import order_obj
 from config.config import app_config
 
-class Test_Case(unittest.TestCase):
-
+class TestCase(unittest.TestCase):
+    "The test Class for the add_food feature"
 
     def setUp(self):
         " setting up variables to run before test"
@@ -28,25 +29,25 @@ class Test_Case(unittest.TestCase):
 
     def test_empty_menu_list(self):
         "asserting menu list is empty"
-        self.assertEqual(len(order_obj.get_all_foods()),0)
+        self.assertEqual(len(order_obj.get_all_foods()), 0)
 
     def test_post_valid_food(self):
-         "asserting valid food item aded on a valid post"
-         resp = self.app.post(self.hostname + "menu/add", data=json.dumps(self.food),
-                              content_type='application/json')
-         self.assertEqual(len(order_obj.get_all_foods()), 1)
+        "asserting valid food item aded on a valid post"
+        self.app.post(self.hostname + "menu/add", data=json.dumps(self.food),
+                      content_type='application/json')
+        self.assertEqual(len(order_obj.get_all_foods()), 1)
 
     def test_post_valid_food2(self):
-         "checking status code on a valid post"
-         resp = self.app.post(self.hostname + "menu/add", data=json.dumps(self.food),
-                              content_type='application/json')
-         self.assertEqual(resp.status_code, 201)
+        "checking status code on a valid post"
+        resp = self.app.post(self.hostname + "menu/add", data=json.dumps(self.food),
+                             content_type='application/json')
+        self.assertEqual(resp.status_code, 201)
 
     def test_post_invalid_food(self):
-         "checking status code on an invalid post"
-         resp = self.app.post(self.hostname + "menu/add", data=json.dumps(self.food_invalid),
-                              content_type='application/json')
-         self.assertEqual(resp.status_code, 406)
+        "checking status code on an invalid post"
+        resp = self.app.post(self.hostname + "menu/add", data=json.dumps(self.food_invalid),
+                             content_type='application/json')
+        self.assertEqual(resp.status_code, 406)
 
     def test_post_exixting_food(self):
         "checking status code on posting existing food item"
@@ -61,7 +62,7 @@ class Test_Case(unittest.TestCase):
         resp = self.app.post(self.hostname + "menu/add", content_type='application/json')
         self.assertEqual(resp.status_code, 200)
 
-    def test_get_foodlist(self):
+    def test_get_foodlist_on_empty_menu(self):
         "checking status code on a valid request when menu is empty"
         resp = self.app.get(self.hostname + "menu")
         self.assertEqual(resp.status_code, 200)

@@ -1,11 +1,12 @@
+"A module to test get all orders feature"
 import unittest
 from app.models.orders import Orders
 from app.views.routes import My_app
 from app.views.routes import order_obj
 from config.config import app_config
 
-class Test_Case(unittest.TestCase):
-
+class TestCase(unittest.TestCase):
+    "A class for testing the get all orders feature"
 
     def setUp(self):
         " setting up variables to run before test"
@@ -14,7 +15,7 @@ class Test_Case(unittest.TestCase):
         self.order = {
             "order_id" : 1,
             "order_uuid" : "essssss",
-             "order_food_id" : 1,
+            "order_food_id" : 1,
             "order_quantity" : "1",
             "order_created_at" : "13/04/2016",
             "order_status" : "pendng",
@@ -25,12 +26,15 @@ class Test_Case(unittest.TestCase):
 
 
     def test_model_creation(self):
+        "A method to test model object creation"
         self.assertIsInstance(self.order_obj1, Orders)
 
     def test_empty_list(self):
-        self.assertEqual(len(self.order_obj1.get_all_orders()),0)
+        "Asserting no dummy data in model object"
+        self.assertEqual(len(self.order_obj1.get_all_orders()), 0)
 
     def test_add_list(self):
+        "Asserting that list can be added to"
         self.order_obj1.orders_list.append(self.order)
         self.assertEqual(len(self.order_obj1.get_all_orders()), 1)
 
@@ -40,6 +44,7 @@ class Test_Case(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
 
     def test_return_message(self):
+        "checking that a right message is returned on calling get request"
         resp = self.app.get(self.hostname + "orders")
         self.assertIn("Message\": \"Empty order list", str(resp.data))
 
@@ -50,17 +55,20 @@ class Test_Case(unittest.TestCase):
         self.assertEqual(resp.status_code, 202)
 
     def test_return_data(self):
+        "Asserting that right data is returned on a get request"
         order_obj.orders_list.append(self.order)
         resp = self.app.get(self.hostname + "orders")
         self.assertIn('mutesasira', str(resp.data))
 
     def test_index(self):
+        "Testingthat a right status code is returned on calling the get request of index url"
         resp = self.app.get()
         self.assertEqual(resp.status_code, 202)
 
 
     def tearDown(self):
-         order_obj.orders_list.clear()
+        "Reseting parameters after tests"
+        order_obj.orders_list.clear()
 
 
 
