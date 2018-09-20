@@ -34,42 +34,25 @@ def place_order():
             order_quantity = new_oder["order_quantity"]
             order_client = new_oder["order_client"]
 
-           #checking for empty order lists
-            if order_obj.orders_list:
-                #checking  whether order exists
-                if order_obj.check_existing_order(order_food_id, order_client):
-                    message1 = {"ERROR": "same oder_food has been paced today ,"
-                                         " please oder for a different food item"}
-                    return jsonify(message1), 406
-                else:
-                    #checking for foof list in menu
-                    if order_obj.food_list:
-                        #checking whethr posted food id exists in the menu
-                        if order_obj.check_existing_food_by_id(order_food_id):
-                            order_obj.place_order(order_food_id, order_quantity, order_client)
-                            return jsonify({"Order created succesfully" :order_obj.orders_list},
-                                           {"Available food list" : order_obj.food_list}), 201
-
-                        message2 = {"Error": "Food_id requested doesnt exist ",
-                                    "Available food list": order_obj.food_list}
-
-                        return jsonify(message2), 200
-                    return jsonify({"Empty food list": "contact Admin to add food items"}), 200
+            if order_obj.check_existing_order(order_food_id, order_client):
+                message1 = {"ERROR": "same oder_food has been paced today ,"
+                                     " please oder for a different food item"}
+                return jsonify(message1), 406
             else:
-                #checking empty food list
+                # checking for foof list in menu
                 if order_obj.food_list:
-                    # checking whethr posted food id exists in the menu
-                    if order_obj.check_existing_food_by_id(order_food_id):
+                    # checking whether posted food id exists in the menu
+                    if order_obj.check_existing_food(order_food_id):
                         order_obj.place_order(order_food_id, order_quantity, order_client)
-                        return jsonify({"Order created succesfuly":order_obj.orders_list},
+                        return jsonify({"Order created succesfully": order_obj.orders_list},
                                        {"Available food list": order_obj.food_list}), 201
 
-                    message3 = {"Error": "Food_id requested doesnt exist ",
-                                "Available food list": order_obj.food_list
-                                }
-                    return jsonify(message3), 200
+                    message2 = {"Error": "Food_id requested doesnt exist ",
+                                "Available food list": order_obj.food_list}
 
+                    return jsonify(message2), 200
                 return jsonify({"Empty food list": "contact Admin to add food items"}), 200
+
 
         message2 = {"ERROR": "invalid order object",
                     "Help": "order object should be  "
@@ -92,12 +75,9 @@ def add_food_iems():
             food_name = new_food["food_name"]
             food_price = new_food["food_price"]
 
-            if order_obj.food_list:
-                # check whether food item exists
-                if order_obj.check_existing_food_by_name(food_name):
-                    return jsonify({"ERROR": "Food item already exists"}), 406
-                order_obj.add_food(food_name, food_price)
-                return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
+            # check whether food item exists
+            if order_obj.check_existing_food(food_name):
+                return jsonify({"ERROR": "Food item already exists"}), 406
             order_obj.add_food(food_name, food_price)
             return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
         message2 = {"ERROR": "invalid food object",
