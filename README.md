@@ -28,6 +28,9 @@ ___
 | Add food item to menu | POST| api/v1/menu/add|
 | Index page | GET | /|
 
+___
+ The apllication is hosted on [Heroku HERE](https://fast-food-fast-mozzy22.herokuapp.com/)
+___
 
 [![Coverage Status](https://coveralls.io/repos/github/mozzy22/Fast-Food-Fast-API/badge.svg?branch=develop)](https://coveralls.io/github/mozzy22/Fast-Food-Fast-API?branch=develop)
 [![Build Status](https://travis-ci.org/mozzy22/Fast-Food-Fast-API.svg?branch=develop)](https://travis-ci.org/mozzy22/Fast-Food-Fast-API)
