@@ -145,9 +145,36 @@ class Orders:
                 pass
         return my_order
 
+    def update_order_status(self, order_uuid, status):
+        " A method to update the status of the order"
+        my_order = {}
+        for order in self.orders_list:
+            if order["order_uuid"] == order_uuid :
+                my_order = order
+                break
+            else:
+                pass
+        if my_order:
+            if status == "yes":
+                my_order["order_status"] = Orders.STATUS2
+            elif status == "no":
+                my_order["order_status"] = Orders.STATUS3
+            elif status == "ok":
+                my_order["order_status"] = Orders.STATUS4
+            else:
+                pass
+        else:
+            pass
+        return my_order
+
+
+
+
+
 # if __name__ == "__main__":
 #     a = Orders()
-    #a.check_existing_food_id(4)
+#     #a.check_existing_food_id(4)
+#     a.update_order_status("a", "no")
 
 
 

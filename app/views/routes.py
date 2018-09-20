@@ -148,6 +148,29 @@ def fetch_order(order_uuid):
     else:
         return jsonify({"MESSAGE": "No order placed yet"}), 200
 
+#A function that updates order status
+@My_app.route('/api/v1/orders/<order_uuid>', methods=['PUT'])
+def update_order_status(order_uuid):
+    updated_order = {}
+    if request.data:
+        new_status_obj = request.json
+        if ("order_status" in new_status_obj):
+            new_status = new_status_obj["order_status"]
+            if new_status in ["ok", "yes" , "no"]:
+                 updated_order = order_obj.update_order_status(order_uuid,new_status)
+                 if updated_order :
+                     return jsonify("SUCCESFULLY UPDATED ORDER STATUS",updated_order)
+                 else:
+                     return jsonify({"Message" : "Oder UUID requested doesnt exist"})
+
+            else:
+                return jsonify({"ERROR" : "Unknown status. staus must be in [ok, yes, no]"})
+        else:
+            return jsonify({"Invalid status object" : "status should be {'order_status': status}"})
+    else:
+        return jsonify({"ERROR": "Empty status update content"}), 200
+
+
 
 
 
