@@ -34,5 +34,5 @@ ___
 <a href="https://codeclimate.com/github/mozzy22/Fast-Food-Fast-API/maintainability"><img src="https://api.codeclimate.com/v1/badges/d21a9263c5c24aac6035/maintainability" /></a>
 
 ___
-    ####   *WISH TOU ALL THE BEST AS YOU DINE WITH US*
+      *WISH TOU ALL THE BEST AS YOU DINE WITH US*
 ___
