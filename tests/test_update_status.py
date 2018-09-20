@@ -1,11 +1,12 @@
+"A module to test the status update feature"
 import unittest
 import json
-from app.views.routes import My_app
-from app.views.routes import order_obj
+from app.views.routes import My_app, order_obj
 from config.config import app_config
 from app.models.orders import Orders
 
-class Test_Case(unittest.TestCase):
+class TestCase(unittest.TestCase):
+    "A class for testing the update status feature"
 
 
     def setUp(self):
@@ -42,7 +43,7 @@ class Test_Case(unittest.TestCase):
     #Testing the model method
     def test_empty_order_list(self):
         "asserting orders list is empty"
-        self.assertEqual(len(self.order_obj.orders_list),0)
+        self.assertEqual(len(self.order_obj.orders_list), 0)
 
     def test_update_valid_uuid(self):
         "asserting that the method is updated"
@@ -71,31 +72,32 @@ class Test_Case(unittest.TestCase):
      #Testing the routes
 
     def test_put_valid_uuid_empty_orderlist(self):
-         "checking status code when order list is empty"
-         resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
-                              content_type='application/json')
-         self.assertEqual(resp.status_code, 406)
+        "checking status code when order list is empty"
+        resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
+                            content_type='application/json')
+        self.assertEqual(resp.status_code, 406)
 
 
     def test_put_valid_uuid_with_orderlist(self):
-         "checking status code when right order uuid is posted , with order list"
-         order_obj.orders_list.append(self.order)
-         resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
-                              content_type='application/json')
-         self.assertEqual(resp.status_code, 202)
+        "checking status code when right order uuid is posted , with order list"
+        order_obj.orders_list.append(self.order)
+        resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
+                            content_type='application/json')
+        self.assertEqual(resp.status_code, 202)
 
     def test_put_invalid_uuid_with_orderlist(self):
         "checking status code when invalid status is posted"
         order_obj.orders_list.append(self.order)
-        resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.invalid_status),
-                            content_type='application/json')
+        resp = self.app.put(self.hostname + "orders/rigt_uuid",
+                            data=json.dumps(self.invalid_status), content_type='application/json')
         self.assertEqual(resp.status_code, 406)
 
     def test_put_invalid_status_with_orderlist(self):
         "checking status code when invalid status object is posted"
         order_obj.orders_list.append(self.order)
-        resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.invalid_status_obj),
-                            content_type='application/json')
+        resp = self.app.put(self.hostname + "orders/rigt_uuid",
+                            data=json.dumps(self.invalid_status_obj), content_type='application/json')
+
         self.assertEqual(resp.status_code, 406)
 
     def test_put_empty_status_with_orderlist(self):
@@ -103,7 +105,6 @@ class Test_Case(unittest.TestCase):
         order_obj.orders_list.append(self.order)
         resp = self.app.put(self.hostname + "orders/rigt_uuid")
         self.assertEqual(resp.status_code, 200)
-
 
 
     def tearDown(self):

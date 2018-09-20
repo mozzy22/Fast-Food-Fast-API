@@ -62,12 +62,10 @@ class Orders:
 
     def validate_order_obj(self, order_Obj):
         "A method to validate a user object"
-        if ("order_food_id" in order_Obj and "order_quantity" in order_Obj
-              and "order_client" in order_Obj):
+        if ("order_food_id" in order_Obj and "order_quantity" in order_Obj and
+                    "order_client" in order_Obj):
             return True
-        else:
-            return False
-
+        return False
 
     def get_all_foods(self):
         "A method to return all availabe food list"
@@ -82,16 +80,15 @@ class Orders:
         self.food = {
             "food_id": self.food_id,
             "food_name": self.food_name,
-            "food_price": self.food_price
-         }
+            "food_price": self.food_price}
         self.food_list.append(self.food)
+
 
     def validate_food_obj(self, food_Obj):
         "A method to validate a food object"
         if ("food_name" in food_Obj and "food_price" in food_Obj):
             return True
-        else:
-            return False
+        return False
 
 
     def check_existing_order(self, order_food_id, order_client):
@@ -149,7 +146,7 @@ class Orders:
         " A method to update the status of the order"
         my_order = {}
         for order in self.orders_list:
-            if order["order_uuid"] == order_uuid :
+            if order["order_uuid"] == order_uuid:
                 my_order = order
                 break
             else:
@@ -166,19 +163,3 @@ class Orders:
         else:
             pass
         return my_order
-
-
-
-
-
-# if __name__ == "__main__":
-#     a = Orders()
-#     #a.check_existing_food_id(4)
-#     a.update_order_status("a", "no")
-
-
-
-
-
-
-
