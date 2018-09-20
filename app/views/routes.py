@@ -132,3 +132,26 @@ def get_all_foodslist() :
          return jsonify(order_obj.get_all_foods()), 202
      else:
          return jsonify({"Empty menu" : "Please add foods list "}), 200
+
+
+#A function to fetch a specific order by uuid
+@My_app.route('/api/v1/orders/<order_uuid>', methods=['GET'])
+def fetch_order(order_uuid):
+    the_order = {}
+    #checking if the order list contains data
+    if order_obj.orders_list:
+       the_order = order_obj.fetch_order_by_uuid(order_uuid)
+       if the_order:
+            return jsonify(the_order), 202
+       else:
+            return jsonify({"ERROR": "The order requested for doent exist"}), 406
+    else:
+        return jsonify({"MESSAGE": "No order placed yet"}), 200
+
+
+
+
+
+
+
+
