@@ -29,14 +29,6 @@ ___
 | Index page | GET | /|
 
 
-| Number  |    Points       |
-| ------  | -----------     |
-|   1     | Eve Jackson 94  |
-|   2     | John Doe 80     |
-|   3     | Adam Johnson 67 |
-
-
-
 [![Coverage Status](https://coveralls.io/repos/github/mozzy22/Fast-Food-Fast-API/badge.svg?branch=develop)](https://coveralls.io/github/mozzy22/Fast-Food-Fast-API?branch=develop)
 [![Build Status](https://travis-ci.org/mozzy22/Fast-Food-Fast-API.svg?branch=develop)](https://travis-ci.org/mozzy22/Fast-Food-Fast-API)
 <a href="https://codeclimate.com/github/mozzy22/Fast-Food-Fast-API/maintainability"><img src="https://api.codeclimate.com/v1/badges/d21a9263c5c24aac6035/maintainability" /></a>
