@@ -108,23 +108,23 @@ class TestCase(unittest.TestCase):
     def test_exist_food_id(self):
         "method to assert food id exists"
         self.order_obj.add_food("pizza", "20$")
-        self.assertTrue(self.order_obj.check_existing_food_by_id(1))
+        self.assertTrue(self.order_obj.check_existing_food(1))
 
     def test_exist_food_id2(self):
         "method to assert food id doesnt exists"
         self.order_obj.add_food("pizza", "20$")
         self.order_obj.add_food("chicken", "20$")
-        self.assertFalse(self.order_obj.check_existing_food_by_id(3))
+        self.assertFalse(self.order_obj.check_existing_food(3))
 
     def test_exist_food_name(self):
         "method to assert food exists byname"
         self.order_obj.add_food("pizza", "20$")
-        self.assertTrue(self.order_obj.check_existing_food_by_name("pizza"))
+        self.assertTrue(self.order_obj.check_existing_food("pizza"))
 
     def test_exist_food_name2(self):
         "method to assert food  doesnt exist by name"
         self.order_obj.add_food("pizza", "20$")
-        self.assertFalse(self.order_obj.check_existing_food_by_name("none"))
+        self.assertFalse(self.order_obj.check_existing_food("none"))
 
 #Testing the routes
     def test_empty_list(self):

@@ -95,41 +95,39 @@ class Orders:
         "a method to check whethr a given order already exists"
         exist = True
         order_created_at = datetime.date.today()
-        for order in self.orders_list:
-            if order["order_food_id"] == order_food_id and order["order_client"] == order_client \
-                    and order["order_created_at"] == order_created_at:
-                exist = True
-                break
-            else:
-                exist = False
-
+        if self.orders_list:
+            for order in self.orders_list:
+                if order["order_food_id"] == order_food_id and order["order_client"] == order_client \
+                        and order["order_created_at"] == order_created_at:
+                    exist = True
+                    break
+                else:
+                    exist = False
+        else:
+            exist = False
         return exist
 
 
-    def check_existing_food_by_id(self, order_food_id):
+    def check_existing_food(self, value):
         "A method to check whether a given food item already exists on the menu"
+        key = ""
+        if isinstance(value, int):
+            key = "food_id"
+        elif isinstance(value, str):
+            key =  "food_name"
         exist = True
-        for food in self.food_list:
-            if food["food_id"] == order_food_id:
-                exist = True
-                break
-            else:
-                exist = False
-                #print(food)
-        #print(exist)
+        if self.food_list:
+            for food in self.food_list:
+                if food[key] == value:
+                    exist = True
+                    break
+                else:
+                    exist = False
+                    # print(food)
+        else:
+            exist = False
         return exist
 
-    def check_existing_food_by_name(self, food_name):
-        "A method to check whether a given food item already exists on the menuby name"
-        exist = True
-        for food in self.food_list:
-            if food["food_name"] == food_name:
-                exist = True
-                break
-            else:
-                exist = False
-
-        return exist
 
     def fetch_order_by_uuid(self, order_uuid):
         "A method to fetch a specific order"
@@ -143,14 +141,7 @@ class Orders:
         return my_order
 
     def update_order_status(self, order_uuid, status):
-        " A method to update the status of the order"
-        my_order = {}
-        for order in self.orders_list:
-            if order["order_uuid"] == order_uuid:
-                my_order = order
-                break
-            else:
-                pass
+        my_order = self.fetch_order_by_uuid(order_uuid)
         if my_order:
             if status == "yes":
                 my_order["order_status"] = Orders.STATUS2
