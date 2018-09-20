@@ -18,8 +18,8 @@ ___
 ___
 ### See the  Features and their endpoints
 
-| FEATURE | METHOD|END POINT|
-| --- | --- | |
+| FEATURE | METHOD | END POINT|
+| --- | --- |--- |
 | Get all orders | GET | api/v1/orders|
 | Place anew order | POST | api/v1/orders|
 | Fetch a specific order | GET| api/v1/orders/order-uuid|
@@ -27,6 +27,13 @@ ___
 | Fetch all food items on the menu| GET | api/v1/menu|
 | Add food item to menu | POST| api/v1/menu/add|
 | Index page | GET | /|
+
+
+| Number  |    Points       |
+| ------  | -----------     |
+|   1     | Eve Jackson 94  |
+|   2     | John Doe 80     |
+|   3     | Adam Johnson 67 |
 
 
 
