@@ -34,24 +34,21 @@ def place_order():
             order_quantity = new_oder["order_quantity"]
             order_client = new_oder["order_client"]
 
+              #checking for existing oder
             if order_obj.check_existing_order(order_food_id, order_client):
                 message1 = {"ERROR": "same oder_food has been paced today ,"
                                      " please oder for a different food item"}
                 return jsonify(message1), 406
             else:
-                # checking for foof list in menu
-                if order_obj.food_list:
-                    # checking whether posted food id exists in the menu
-                    if order_obj.check_existing_food(order_food_id):
-                        order_obj.place_order(order_food_id, order_quantity, order_client)
-                        return jsonify({"Order created succesfully": order_obj.orders_list},
-                                       {"Available food list": order_obj.food_list}), 201
+                if order_obj.check_existing_food(order_food_id):
+                    order_obj.place_order(order_food_id, order_quantity, order_client)
+                    return jsonify({"Order created succesfully": order_obj.orders_list},
+                                   {"Available food list": order_obj.food_list}), 201
 
-                    message2 = {"Error": "Food_id requested doesnt exist ",
-                                "Available food list": order_obj.food_list}
+                message2 = {"Error": "Food_id requested doesnt exist ",
+                            "Available food list": order_obj.food_list}
 
-                    return jsonify(message2), 200
-                return jsonify({"Empty food list": "contact Admin to add food items"}), 200
+                return jsonify(message2), 200
 
 
         message2 = {"ERROR": "invalid order object",
@@ -115,22 +112,26 @@ def fetch_order(order_uuid):
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['PUT'])
 def update_order_status(order_uuid):
     "A function to update the status of an order by uuid"
-    updated_order = {}
+
     if request.data:
         new_status_obj = request.json
-        #validating status object
-        if "order_status" in new_status_obj:
+        #validating status object and status
+        if "order_status" in new_status_obj :
+
             new_status = new_status_obj["order_status"]
-            #validating a valid status
-            if new_status in ["ok", "yes", "no"]:
-                updated_order = order_obj.update_order_status(order_uuid, new_status)
-                if updated_order:
-                    return jsonify("SUCCESFULLY UPDATED ORDER STATUS", updated_order), 202
-                return jsonify({"Message": "Oder UUID requested doesnt exist"}), 406
-            return jsonify({"ERROR": "Unknown status. staus must be in [ok, yes, no]"}), 406
-        return jsonify({"Invalid status object": "status should be {'order_status': status}"}) \
-            , 406
-    return jsonify({"ERROR": "Empty status update content"}), 200
+            updated_order = order_obj.update_order_status(order_uuid, new_status)
+            if updated_order :
+               return jsonify( updated_order), 202
+
+            else:
+                  message =({"Message": "Oder for update doent exist"})
+        else:
+            message = {"Invalid status object": "status should be {'order_status': status} "
+                         "and  status must be in [ok, yes, no]"}
+        return jsonify(message) ,406
+    else:
+        return jsonify({"ERROR": "No content posted"}), 406
+
 
 #A function to act as index page , to offer description to the user
 @My_app.route('/', methods=['GET'])
