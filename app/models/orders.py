@@ -150,7 +150,7 @@ class Orders:
             elif status == "ok":
                 my_order["order_status"] = Orders.STATUS4
             else:
-                pass
+                my_order["order_status"] = "Invalid status update . status must be in [ok, yes ,no] !!!!"
         else:
             pass
         return my_order

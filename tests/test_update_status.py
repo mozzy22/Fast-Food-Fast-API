@@ -85,12 +85,6 @@ class TestCase(unittest.TestCase):
                             content_type='application/json')
         self.assertEqual(resp.status_code, 202)
 
-    def test_put_invalid_uuid_with_orderlist(self):
-        "checking status code when invalid status is posted"
-        order_obj.orders_list.append(self.order)
-        resp = self.app.put(self.hostname + "orders/rigt_uuid",
-                            data=json.dumps(self.invalid_status), content_type='application/json')
-        self.assertEqual(resp.status_code, 406)
 
     def test_put_invalid_status_with_orderlist(self):
         "checking status code when invalid status object is posted"
@@ -104,7 +98,7 @@ class TestCase(unittest.TestCase):
         "checking status code when no content is posted"
         order_obj.orders_list.append(self.order)
         resp = self.app.put(self.hostname + "orders/rigt_uuid")
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 406)
 
 
     def tearDown(self):
