@@ -36,8 +36,8 @@ def place_order():
 
               #checking for existing oder
             if order_obj.check_existing_order(order_food_id, order_client):
-                message1 = {"ERROR": "same oder_food has been paced today ,"
-                                     " please oder for a different food item"}
+                message1 = {"Error": "Order already exist,"
+                                     " please order for a different food item"}
                 return jsonify(message1), 406
             else:
                 if order_obj.check_existing_food(order_food_id):
@@ -45,8 +45,8 @@ def place_order():
                     return jsonify({"Order created succesfully": order_obj.orders_list},
                                    {"Available food list": order_obj.food_list}), 201
 
-                message2 = {"Error": "Food_id requested doesnt exist ",
-                            "Available food list": order_obj.food_list}
+                message2 = {"Error": "Unable to find food id  ",
+                            " See available food list": order_obj.food_list}
 
                 return jsonify(message2), 200
 
@@ -77,10 +77,10 @@ def add_food_iems():
                 return jsonify({"ERROR": "Food item already exists"}), 406
             order_obj.add_food(food_name, food_price)
             return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
-        message2 = {"ERROR": "invalid food object",
+        message2 = {"Vakidation Error": "invalid food object",
                     "Help": "food object should be {'food_name' : name ,'food_price': price}"}
         return jsonify(message2), 406
-    return jsonify({"ERROR": "Empty food content"}), 200
+    return jsonify({"ERROR": "Empty  content"}), 200
 
 
 #a function to fetch all foods list by admin
@@ -104,8 +104,8 @@ def fetch_order(order_uuid):
         the_order = order_obj.fetch_order_by_uuid(order_uuid)
         if the_order:
             return jsonify(the_order), 202
-        return jsonify({"ERROR": "The order requested for doent exist"}), 406
-    return jsonify({"MESSAGE": "No order placed yet"}), 200
+        return jsonify({"ERROR": "Unable to find order"}), 406
+    return jsonify({"MESSAGE": "Empty order List"}), 200
 
 
 #A function that updates order status
@@ -124,13 +124,13 @@ def update_order_status(order_uuid):
                return jsonify( updated_order), 202
 
             else:
-                  message =({"Message": "Oder for update doent exist"})
+                  message =({"Error": "Unable to find order"})
         else:
             message = {"Invalid status object": "status should be {'order_status': status} "
                          "and  status must be in [ok, yes, no]"}
         return jsonify(message) ,406
     else:
-        return jsonify({"ERROR": "No content posted"}), 406
+        return jsonify({"ERROR": "Empty content"}), 406
 
 
 #A function to act as index page , to offer description to the user

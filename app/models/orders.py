@@ -93,18 +93,16 @@ class Orders:
 
     def check_existing_order(self, order_food_id, order_client):
         "a method to check whethr a given order already exists"
-        exist = True
+        exist = False
         order_created_at = datetime.date.today()
-        if self.orders_list:
-            for order in self.orders_list:
-                if order["order_food_id"] == order_food_id and order["order_client"] == order_client \
-                        and order["order_created_at"] == order_created_at:
-                    exist = True
-                    break
-                else:
-                    exist = False
-        else:
-            exist = False
+
+        for order in self.orders_list:
+            if order["order_food_id"] == order_food_id and order["order_client"] == order_client \
+                    and order["order_created_at"] == order_created_at:
+                exist = True
+                break
+            else:
+                exist = False
         return exist
 
 
@@ -115,17 +113,14 @@ class Orders:
             key = "food_id"
         elif isinstance(value, str):
             key =  "food_name"
-        exist = True
-        if self.food_list:
-            for food in self.food_list:
-                if food[key] == value:
-                    exist = True
-                    break
-                else:
-                    exist = False
-                    # print(food)
-        else:
-            exist = False
+        exist = False
+        for food in self.food_list:
+            if food[key] == value:
+                exist = True
+                break
+            else:
+                exist = False
+                # print(food)
         return exist
 
 
