@@ -35,8 +35,9 @@ def place_order():
             order_client = new_oder["order_client"]
 
               #checking for existing oder
-            if order_obj.check_existing_order(order_food_id, order_client):
-                message1 = {"Error": "Order already exist,"
+            if order_obj.check_existing_order(order_food_id, order_client) or  order_food_id =="" \
+                    or  order_quantity == ""  or  order_client == "":
+                message1 = {"Error": "Order already exist or Missing order Fields,"
                                      " please order for a different food item"}
                 return jsonify(message1), 406
             else:
@@ -73,11 +74,11 @@ def add_food_iems():
             food_price = new_food["food_price"]
 
             # check whether food item exists
-            if order_obj.check_existing_food(food_name):
-                return jsonify({"ERROR": "Food item already exists"}), 406
+            if order_obj.check_existing_food(food_name) or  food_name ==""  or food_price == "":
+                return jsonify({"ERROR": "Food item already exists or Empty order fields"}), 406
             order_obj.add_food(food_name, food_price)
             return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
-        message2 = {"Vakidation Error": "invalid food object",
+        message2 = {"Vakidation Error": "invalid food object ",
                     "Help": "food object should be {'food_name' : name ,'food_price': price}"}
         return jsonify(message2), 406
     return jsonify({"ERROR": "Empty  content"}), 200
