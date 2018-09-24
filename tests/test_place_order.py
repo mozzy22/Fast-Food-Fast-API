@@ -95,11 +95,6 @@ class TestCase(unittest.TestCase):
         self.assertFalse(self.order_obj.validate_food_obj(self.food_invalid))
 
 
-    # def test_check_exist_order(self):
-    #     "method to assert order exists"
-    #     self.order_obj.place_order(1, 3, "moses")
-    #     self.assertTrue(self.order_obj.check_existing_order(1, "moses"))
-
     def test_check_exist_order2(self):
         "method to assert order doesnt exists"
         self.order_obj.place_order(1, 3, "moses")
