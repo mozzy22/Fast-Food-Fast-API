@@ -6,7 +6,7 @@ from flask import request
 from app.models.orders import Orders
 
 
-My_app = Flask(__name__, instance_relative_config=True)
+My_app = Flask(__name__)
 
 order_obj = Orders()
 
