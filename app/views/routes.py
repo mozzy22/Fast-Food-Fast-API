@@ -78,7 +78,7 @@ def add_food_iems():
                 return jsonify({"ERROR": "Food item already exists or Empty order fields"}), 406
             order_obj.add_food(food_name, food_price)
             return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
-        message2 = {"Vakidation Error": "invalid food object ",
+        message2 = {"Validation Error": "invalid food object ",
                     "Help": "food object should be {'food_name' : name ,'food_price': price}"}
         return jsonify(message2), 406
     return jsonify({"ERROR": "Empty  content"}), 200
