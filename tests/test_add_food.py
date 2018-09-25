@@ -2,7 +2,7 @@
 import unittest
 import json
 from app.views.routes import My_app
-from app.views.routes import order_obj
+from app.views.menu_blueprint import order_obj
 from config.config import app_config
 
 class TestCase(unittest.TestCase):
