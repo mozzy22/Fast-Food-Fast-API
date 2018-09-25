@@ -1,4 +1,4 @@
-"A module for setting up the API  strings"
+"A module for setting up the API routes"
 
 from flask import Flask
 from flask import jsonify
@@ -25,63 +25,73 @@ def get_all_orders():
 def place_order():
     " a function to place an order"
     #checking empty request data
-    if request.data:
+
+    try :
         new_oder = request.json
+    except Exception:
+        return jsonify({"ERROR": "Empty content posted"}), 406
 
-        #validating the order object
-        if order_obj.validate_order_obj(new_oder):
-            order_food_id = new_oder["order_food_id"]
-            order_quantity = new_oder["order_quantity"]
-            order_client = new_oder["order_client"]
+    # validating the order object
+    if order_obj.validate_order_obj(new_oder):
+        order_food_id = new_oder["order_food_id"]
+        order_quantity = new_oder["order_quantity"]
+        order_client = new_oder["order_client"]
 
-              #checking for existing oder
-            if order_obj.check_existing_order(order_food_id, order_client) or  order_food_id =="" \
-                    or  order_quantity == ""  or  order_client == "":
-                message1 = {"Error": "Order already exist or Missing order Fields,"
-                                     " please order for a different food item"}
-                return jsonify(message1), 406
-            else:
-                if order_obj.check_existing_food(order_food_id):
-                    order_obj.place_order(order_food_id, order_quantity, order_client)
-                    return jsonify({"Order created succesfully": order_obj.orders_list},
-                                   {"Available food list": order_obj.food_list}), 201
+        # checking whether the order already exists
+        if order_obj.check_existing_order(order_food_id, order_client) or not order_food_id \
+                or not order_quantity or not order_client:
+            message1 = {"Error": "Order already exist or Missing order Fields,"
+                                 " please order for a different food item"}
+            return jsonify(message1), 406
+        else:
+            #checking whether the food item requested for exists
+            if order_obj.check_existing_food(order_food_id):
+                order_obj.place_order(order_food_id, order_quantity, order_client)
+                return jsonify({"Order created succesfully": order_obj.orders_list},
+                               {"Available food list": order_obj.food_list}), 201
 
-                message2 = {"Error": "Unable to find food id  ",
-                            " See available food list": order_obj.food_list}
+            message2 = {"Error": "Unable to find food id  ",
+                        " See available food list": order_obj.food_list}
 
-                return jsonify(message2), 200
+            return jsonify(message2), 200
+
+    message2 = {"ERROR": "invalid order object",
+                "Help": "order object should be  "
+                        "{'order_food_id' : id ,'order_quantity': qty, "
+                        "'order_client':name}"}
+    return jsonify(message2), 406
 
 
-        message2 = {"ERROR": "invalid order object",
-                    "Help": "order object should be  "
-                            "{'order_food_id' : id ,'order_quantity': qty, "
-                            "'order_client':name}"}
-        return jsonify(message2), 406
 
-    return jsonify({"ERROR": "Empty order posted"}), 406
+
 
 #A function for admin to add food items to the menu
 @My_app.route('/api/v1/menu/add', methods=['POST'])
 def add_food_iems():
     "A function that adds food items"
     #checking empty response content
-    if request.data:
+    try:
         new_food = request.json
+    except Exception:
+        return jsonify({"ERROR": "Empty  content"}), 200
 
-        #validating food object
-        if order_obj.validate_food_obj(new_food):
-            food_name = new_food["food_name"]
-            food_price = new_food["food_price"]
+    # validating food object
+    if order_obj.validate_food_obj(new_food):
+        food_name = new_food["food_name"]
+        food_price = new_food["food_price"]
 
-            # check whether food item exists
-            if order_obj.check_existing_food(food_name) or  food_name ==""  or food_price == "":
-                return jsonify({"ERROR": "Food item already exists or Empty order fields"}), 406
-            order_obj.add_food(food_name, food_price)
-            return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
-        message2 = {"Validation Error": "invalid food object ",
-                    "Help": "food object should be {'food_name' : name ,'food_price': price}"}
-        return jsonify(message2), 406
-    return jsonify({"ERROR": "Empty  content"}), 200
+        # check whether food item exists
+        if order_obj.check_existing_food(food_name) or not food_name or not food_price:
+            return jsonify({"ERROR": "Food item already exists or Empty order fields"}), 406
+
+         #Adding the food item to te menu
+        order_obj.add_food(food_name, food_price)
+        return jsonify("SUCCESFULY ADDED FOOD TO MENU", order_obj.get_all_foods()), 201
+
+    message2 = {"Validation Error": "invalid food object ",
+                "Help": "food object should be {'food_name' : name ,'food_price': price}"}
+    return jsonify(message2), 406
+
 
 
 #a function to fetch all foods list by admin
@@ -99,7 +109,7 @@ def get_all_foodslist():
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['GET'])
 def fetch_order(order_uuid):
     "A function to fetch a specified order by uuid"
-    the_order = {}
+
     #checking if the order list contains data
     if order_obj.orders_list:
         the_order = order_obj.fetch_order_by_uuid(order_uuid)
@@ -114,24 +124,26 @@ def fetch_order(order_uuid):
 def update_order_status(order_uuid):
     "A function to update the status of an order by uuid"
 
-    if request.data:
+    try :
         new_status_obj = request.json
-        #validating status object and status
-        if "order_status" in new_status_obj :
-
-            new_status = new_status_obj["order_status"]
-            updated_order = order_obj.update_order_status(order_uuid, new_status)
-            if updated_order :
-               return jsonify( updated_order), 202
-
-            else:
-                  message =({"Error": "Unable to find order"})
-        else:
-            message = {"Invalid status object": "status should be {'order_status': status} "
-                         "and  status must be in [ok, yes, no]"}
-        return jsonify(message) ,406
-    else:
+    except Exception:
         return jsonify({"ERROR": "Empty content"}), 406
+
+        #validating status object and status
+    if "order_status" in new_status_obj:
+
+        new_status = new_status_obj["order_status"]
+        updated_order = order_obj.update_order_status(order_uuid, new_status)
+        if updated_order:
+            return jsonify(updated_order), 202
+
+        message = ({"Error": "Unable to find order"})
+    else:
+        message = {"Invalid status object": "status should be {'order_status': status} "
+                                            "and  status must be in [ok, yes, no]"}
+    return jsonify(message), 406
+
+
 
 
 #A function to act as index page , to offer description to the user

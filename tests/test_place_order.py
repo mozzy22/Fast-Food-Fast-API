@@ -176,10 +176,10 @@ class TestCase(unittest.TestCase):
                              content_type='application/json', )
         self.assertEqual(resp.status_code, 406)
 
-    def test_post_empty_order(self):
-        "testing status code if empty content is posted "
-        resp = self.app.post(self.hostname + "orders")
-        self.assertEqual(resp.status_code, 406)
+    # def test_post_empty_content(self):
+    #     "testing status code if empty content is posted "
+    #     resp = self.app.post(self.hostname + "orders")
+    #     self.assertEqual(resp.status_code, 406)
 
     def test_post_invalid_food_id(self):
         "testing status code if order with non existent food id is posted"
