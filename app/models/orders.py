@@ -1,7 +1,8 @@
 "A module for the orders model"
 
 import uuid
-from datetime import datetime
+import datetime
+from flask import request
 __author__ = "Mutesasira Moses"
 
 class Orders:
@@ -44,7 +45,7 @@ class Orders:
         self.order_uuid = str(uuid.uuid1())
         self.order_food_id = order_food_id
         self.order_quantity = order_quantity
-        self.order_created_at = datetime.now()
+        self.order_created_at = datetime.datetime.now().strftime('%Y-%m-%d-%H')
         self.order_status = Orders.STATUS1
         self.order_client = order_client
 
@@ -94,7 +95,7 @@ class Orders:
     def check_existing_order(self, order_food_id, order_client):
         "a method to check whethr a given order already exists"
         exist = False
-        order_created_at = datetime.now()
+        order_created_at = datetime.datetime.now().strftime('%Y-%m-%d-%H')
 
         for order in self.orders_list:
             if order["order_food_id"] == order_food_id and order["order_client"] == order_client \

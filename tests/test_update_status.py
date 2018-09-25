@@ -94,12 +94,6 @@ class TestCase(unittest.TestCase):
 
         self.assertEqual(resp.status_code, 406)
 
-    def test_put_empty_status_with_orderlist(self):
-        "checking status code when no content is posted"
-        order_obj.orders_list.append(self.order)
-        resp = self.app.put(self.hostname + "orders/rigt_uuid")
-        self.assertEqual(resp.status_code, 406)
-
 
     def tearDown(self):
         self.order_obj.orders_list.clear()
