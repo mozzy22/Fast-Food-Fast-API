@@ -43,16 +43,12 @@ class TestCase(unittest.TestCase):
         resp = self.app.get(self.hostname + "orders")
         self.assertEqual(resp.status_code, 200)
 
-    def test_return_message(self):
-        "checking that a right message is returned on calling get request"
-        resp = self.app.get(self.hostname + "orders")
-        self.assertIn("Message\": \"Empty order list", str(resp.data))
 
     def test_right_get_method2(self):
         "asserting a correct method returns an  response with data"
         order_obj.orders_list.append(self.order)
         resp = self.app.get(self.hostname + "orders")
-        self.assertEqual(resp.status_code, 202)
+        self.assertEqual(resp.status_code, 200)
 
     def test_return_data(self):
         "Asserting that right data is returned on a get request"
@@ -63,7 +59,7 @@ class TestCase(unittest.TestCase):
     def test_index(self):
         "Testingthat a right status code is returned on calling the get request of index url"
         resp = self.app.get()
-        self.assertEqual(resp.status_code, 202)
+        self.assertEqual(resp.status_code, 200)
 
 
     def tearDown(self):

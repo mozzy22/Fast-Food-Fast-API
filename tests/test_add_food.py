@@ -15,7 +15,7 @@ class TestCase(unittest.TestCase):
         # valid food objet to be posted
         self.food = {
             "food_name": "fish",
-            "food_price": "25$"
+            "food_price": 12
         }
 
       #invalid food object to be pasted
@@ -47,7 +47,7 @@ class TestCase(unittest.TestCase):
         "checking status code on an invalid post"
         resp = self.app.post(self.hostname + "menu/add", data=json.dumps(self.food_invalid),
                              content_type='application/json')
-        self.assertEqual(resp.status_code, 406)
+        self.assertEqual(resp.status_code, 400)
 
     def test_post_exixting_food(self):
         "checking status code on posting existing food item"
@@ -60,7 +60,7 @@ class TestCase(unittest.TestCase):
         "checking status code on an empty post"
         order_obj.food_list.append(self.food)
         resp = self.app.post(self.hostname + "menu/add", content_type='application/json')
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 400)
 
     def test_get_foodlist_on_empty_menu(self):
         "checking status code on a valid request when menu is empty"
@@ -71,7 +71,7 @@ class TestCase(unittest.TestCase):
         "checking status code on a valid request when menu has items"
         order_obj.food_list.append(self.food)
         resp = self.app.get(self.hostname + "menu")
-        self.assertEqual(resp.status_code, 202)
+        self.assertEqual(resp.status_code, 200)
 
 
     def tearDown(self):
