@@ -19,8 +19,8 @@ def get_all_orders():
 @My_app.route('/api/v1/orders', methods=['POST'])
 def place_order():
     " a function to place an order"
-    #checking empty request data
     new_oder = request.json
+
     # validating the order object
     if order_obj.validate_order_obj(new_oder):
         order_food_id = new_oder["order_food_id"]
@@ -32,6 +32,7 @@ def place_order():
                                                ,["order_quantity","order_food_id"], ["order_client" ])
         if invalid_input:
             return jsonify(invalid_input), 400
+
         # checking whether the order already exists
         if order_obj.check_existing_order(order_food_id, order_client) :
             message1 = {"error": "order duplication"}
@@ -55,7 +56,6 @@ def place_order():
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['GET'])
 def fetch_order(order_uuid):
     "A function to fetch a specified order by uuid"
-
     the_order = order_obj.fetch_order_by_uuid(order_uuid)
     return jsonify(the_order), 200
 
@@ -66,10 +66,13 @@ def update_order_status(order_uuid):
     "A function to update the status of an order by uuid"
 
     new_status_obj = request.json
+
         #validating status object and status
     if "order_status" in new_status_obj:
 
         new_status = new_status_obj["order_status"]
+
+        #validating empty input and input data types
         invalid_input = order_obj.validate_input(new_status_obj, ["order_status"],[],["order_status"])
         if invalid_input:
             return jsonify(invalid_input), 400

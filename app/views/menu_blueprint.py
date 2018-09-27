@@ -9,9 +9,9 @@ order_obj = Orders()
 @My_blue.route('/api/v1/menu/add', methods=['POST'])
 def add_food_items():
     "A function that adds food items"
-    #checking empty response content
 
     new_food = request.json
+
     # validating food object
     if order_obj.validate_food_obj(new_food):
         food_name = new_food["food_name"]
@@ -21,13 +21,14 @@ def add_food_items():
         invalid_input = order_obj.validate_input(new_food, ["food_name", "food_price" ], ["food_price"], ["food_name"])
         if invalid_input:
             return jsonify(invalid_input), 400
+
         # check whether food item exists
         if order_obj.check_existing_food(food_name) :
             return jsonify({"error": "food item duplication"}), 406
 
          #Adding the food item to te menu
-        new_saved_order = order_obj.add_food(food_name, food_price)
-        return jsonify(new_saved_order), 201
+        new_saved_food = order_obj.add_food(food_name, food_price)
+        return jsonify(new_saved_food), 201
 
     message2 = {"error": "invalid food object "}
     return jsonify(message2), 400
