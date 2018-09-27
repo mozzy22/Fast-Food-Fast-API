@@ -39,8 +39,8 @@ def place_order():
         else:
             #checking whether the food item requested for exists
             if order_obj.check_existing_food(order_food_id):
-                order_obj.place_order(order_food_id, order_quantity, order_client)
-                return jsonify(order_obj.orders_list), 201
+                saved_order = order_obj.place_order(order_food_id, order_quantity, order_client)
+                return jsonify(saved_order), 201
 
 
             message2 = {"error": "unable to find food id  "}

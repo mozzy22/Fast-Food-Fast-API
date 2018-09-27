@@ -26,8 +26,8 @@ def add_food_items():
             return jsonify({"error": "food item duplication"}), 406
 
          #Adding the food item to te menu
-        order_obj.add_food(food_name, food_price)
-        return jsonify(order_obj.food_list), 201
+        new_saved_order = order_obj.add_food(food_name, food_price)
+        return jsonify(new_saved_order), 201
 
     message2 = {"error": "invalid food object "}
     return jsonify(message2), 400
@@ -35,7 +35,7 @@ def add_food_items():
 
 #a function to fetch all foods list by admin
 @My_blue.route('/api/v1/menu', methods=['GET'])
-def get_all_foodslist():
+def get_all_foods_list():
     "A function to fetch all menu food items"
     return jsonify(order_obj.get_all_foods()), 200
 
