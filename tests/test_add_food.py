@@ -54,7 +54,7 @@ class TestCase(unittest.TestCase):
         order_obj.food_list.append(self.food)
         resp = self.app.post(self.hostname + "menu/add", data=json.dumps(self.food),
                              content_type='application/json')
-        self.assertEqual(resp.status_code, 406)
+        self.assertEqual(resp.status_code, 400)
 
     def test_post_empty_content(self):
         "checking status code on an empty post"

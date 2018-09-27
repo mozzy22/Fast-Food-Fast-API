@@ -76,7 +76,7 @@ class TestCase(unittest.TestCase):
         "checking status code when order list is empty"
         resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
                             content_type='application/json')
-        self.assertEqual(resp.status_code, 406)
+        self.assertEqual(resp.status_code, 400)
 
 
     def test_put_valid_uuid_with_orderlist(self):
@@ -93,7 +93,7 @@ class TestCase(unittest.TestCase):
         resp = self.app.put(self.hostname + "orders/rigt_uuid",
                             data=json.dumps(self.invalid_status_obj), content_type='application/json')
 
-        self.assertEqual(resp.status_code, 406)
+        self.assertEqual(resp.status_code, 400)
 
 
     def tearDown(self):

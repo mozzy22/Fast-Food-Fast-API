@@ -36,7 +36,7 @@ def place_order():
         # checking whether the order already exists
         if order_obj.check_existing_order(order_food_id, order_client) :
             message1 = {"error": "order duplication"}
-            return jsonify(message1), 406
+            return jsonify(message1), 400
         else:
             #checking whether the food item requested for exists
             if order_obj.check_existing_food(order_food_id):
@@ -46,18 +46,21 @@ def place_order():
 
             message2 = {"error": "unable to find food id  "}
 
-            return jsonify(message2), 406
+            return jsonify(message2), 404
 
-    message2 = {"error": "invalid order object" }
-    return jsonify(message2), 406
+    message2 = {"error": "invalid order object. must be { 'order_food_id': 'order_quantity': 'order_client': }" }
+    return jsonify(message2), 400
 
 
 #A function to fetch a specific order by uuid
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['GET'])
 def fetch_order(order_uuid):
     "A function to fetch a specified order by uuid"
+
     the_order = order_obj.fetch_order_by_uuid(order_uuid)
-    return jsonify(the_order), 200
+    if the_order:
+        return jsonify(the_order), 200
+    return jsonify({"error": "unable to find order"}), 404
 
 
 #A function that updates order status
@@ -82,8 +85,8 @@ def update_order_status(order_uuid):
 
         message = ({"error": "unable to find order"})
     else:
-        message = {"error": "invalid status object"}
-    return jsonify(message), 406
+        message = {"error": "invalid status object . must be {'order_status':  }"}
+    return jsonify(message), 400
 
 #error handlers
 @My_app.errorhandler(400)

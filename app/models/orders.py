@@ -182,6 +182,6 @@ class Orders:
                 raise Exception(data)
 
         except:
-            error_message.append({"error": " invalid *" + str(data) + "* data_type .<" + data_type.__name__ +"> recquired"})
+            error_message.append({"error": " invalid " + str(data) + " data_type .<" + data_type.__name__ +"> recquired"})
 
 
