@@ -47,7 +47,7 @@ class TestCase(unittest.TestCase):
     def test_right_get_method(self):
         "asserting a correct method returns an empty response if order list is empty"
         resp = self.app.get(self.hostname + "orders/string-uuid")
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
 
     def test_status_code_for_right_uuid(self):
         "asserting a request with invalid uuid is  returned"
@@ -59,7 +59,7 @@ class TestCase(unittest.TestCase):
         "asserting a request with invalid uuid is not returned"
         order_obj.orders_list.append(self.order)
         resp = self.app.get(self.hostname + "orders/wrong_uuid")
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
 
     def tearDown(self):
         "A method to reset data structures"

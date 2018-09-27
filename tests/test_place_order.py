@@ -160,7 +160,7 @@ class TestCase(unittest.TestCase):
         order_obj.food_list.clear()
         resp = self.app.post(self.hostname + "orders", data=json.dumps(self.order),
                              content_type='application/json')
-        self.assertEqual(resp.status_code, 406)
+        self.assertEqual(resp.status_code, 404)
 
 
     def test_post_valid_order_status(self):
@@ -173,7 +173,7 @@ class TestCase(unittest.TestCase):
         "testing status code if invalid order is posted"
         resp = self.app.post(self.hostname + "orders", data=json.dumps(self.invalid_order),
                              content_type='application/json', )
-        self.assertEqual(resp.status_code, 406)
+        self.assertEqual(resp.status_code, 400)
 
 
     def test_post_invalid_food_id(self):

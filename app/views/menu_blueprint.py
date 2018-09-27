@@ -24,13 +24,13 @@ def add_food_items():
 
         # check whether food item exists
         if order_obj.check_existing_food(food_name) :
-            return jsonify({"error": "food item duplication"}), 406
+            return jsonify({"error": "food item duplication"}), 400
 
          #Adding the food item to te menu
         new_saved_food = order_obj.add_food(food_name, food_price)
         return jsonify(new_saved_food), 201
 
-    message2 = {"error": "invalid food object "}
+    message2 = {"error": "invalid food object. must be { 'food_name':  'food_price': ' } "}
     return jsonify(message2), 400
 
 
