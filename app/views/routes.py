@@ -70,7 +70,7 @@ def update_order_status(order_uuid):
     if "order_status" in new_status_obj:
 
         new_status = new_status_obj["order_status"]
-        invalid_input = order_obj.validate_input(new_status_obj, ["order_status"],[],[])
+        invalid_input = order_obj.validate_input(new_status_obj, ["order_status"],[],["order_status"])
         if invalid_input:
             return jsonify(invalid_input), 400
         updated_order = order_obj.update_order_status(order_uuid, new_status)
