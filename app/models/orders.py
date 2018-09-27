@@ -59,7 +59,7 @@ class Orders:
             "order_client" : self.order_client
         }
         self.orders_list.append(self.order)
-
+        return self.order
 
     def validate_order_obj(self, order_Obj):
         "A method to validate a user object"
@@ -83,6 +83,7 @@ class Orders:
             "food_name": self.food_name,
             "food_price": self.food_price}
         self.food_list.append(self.food)
+        return self.food
 
 
     def validate_food_obj(self, food_Obj):
