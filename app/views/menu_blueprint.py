@@ -27,7 +27,7 @@ def add_food_items():
 
          #Adding the food item to te menu
         order_obj.add_food(food_name, food_price)
-        return jsonify( order_obj.get_all_foods()), 201
+        return jsonify(order_obj.food_list), 201
 
     message2 = {"error": "invalid food object "}
     return jsonify(message2), 400

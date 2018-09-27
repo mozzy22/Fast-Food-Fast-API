@@ -165,20 +165,22 @@ class Orders:
                 error_message.append({"error" :data + ' is required'})
         #validating int data type
         for data in validation_int_type :
-            try:
-                # Check for empty input
-                if not isinstance( input[data], int):
-                    raise Exception(data)
-            except:
-                error_message.append({"error":" invalid " + data + " type . integer recquired" })
+            self.check_datatype(data, int,input, error_message)
 
          #validating str datatype
-        for data in validation_str_type :
-            try:
-                # Check for empty input
-                if not isinstance( input[data], str):
-                    raise Exception(data)
-            except:
-                error_message.append({"error":" invalid " + data + " type .string recquired" })
+        for data in validation_str_type:
+            self.check_datatype(data, str,input, error_message)
         # return errors
         return error_message
+
+    #method to check data type
+    def check_datatype(self,data, data_type ,input,  error_message):
+        try:
+            # Check for empty input
+            if not isinstance(input[data], data_type):
+                raise Exception(data)
+
+        except:
+            error_message.append({"error": " invalid *" + str(data) + "* data_type .<" + data_type.__name__ +"> recquired"})
+
+
