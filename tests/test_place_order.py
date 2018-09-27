@@ -25,7 +25,7 @@ class TestCase(unittest.TestCase):
         #valid order to be pasted
         self.order = {
             "order_food_id" : 1,
-            "order_quantity" : "1",
+            "order_quantity" : 1,
             "order_client" :"mutesasira"
         }
 
@@ -46,7 +46,7 @@ class TestCase(unittest.TestCase):
         # valid food objet to be posted
         self.food = {
             "food_name": "fish",
-            "food_price": "25$"
+            "food_price": 30
         }
 
       #invalid food object to be pasted
@@ -131,7 +131,6 @@ class TestCase(unittest.TestCase):
         resp = self.app.post(self.hostname + "orders", data=json.dumps(self.order),
                              content_type='application/json')
         self.assertEqual(len(order_obj.get_all_orders()), 1)
-        print(str(resp.data))
 
     def test_post_valid_order2(self):
         "testing valid order is added to order list"
@@ -161,7 +160,7 @@ class TestCase(unittest.TestCase):
         order_obj.food_list.clear()
         resp = self.app.post(self.hostname + "orders", data=json.dumps(self.order),
                              content_type='application/json')
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 406)
 
 
     def test_post_valid_order_status(self):
@@ -181,7 +180,7 @@ class TestCase(unittest.TestCase):
         "testing status code if order with non existent food id is posted"
         resp = self.app.post(self.hostname + "orders", data=json.dumps(self.order_invalid_food_id)
                              , content_type='application/json')
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 400)
 
 
     def tearDown(self):

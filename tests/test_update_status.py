@@ -84,7 +84,7 @@ class TestCase(unittest.TestCase):
         order_obj.orders_list.append(self.order)
         resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
                             content_type='application/json')
-        self.assertEqual(resp.status_code, 202)
+        self.assertEqual(resp.status_code, 200)
 
 
     def test_put_invalid_status_with_orderlist(self):

@@ -77,7 +77,7 @@ class Orders:
         "A  method to add foods items to the menu"
         self.food_id = len(self.food_list) + 1
         self.food_name = food_name
-        self.food_price = food_price
+        self.food_price = str(food_price) + "$"
         self.food = {
             "food_id": self.food_id,
             "food_name": self.food_name,
@@ -146,7 +146,39 @@ class Orders:
             elif status == "ok":
                 my_order["order_status"] = Orders.STATUS4
             else:
-                my_order["order_status"] = "Invalid status update . status must be in [ok, yes ,no] !!!!"
+                my_order["order_status"] = Orders.STATUS1
         else:
             pass
         return my_order
+
+    def validate_input(self,input, validation_data,validation_int_type, validation_str_type ):
+        "method to validate input"
+        error_message = []
+        #validating empty input
+        for data in validation_data:
+            try:
+                input[data]
+                # Check for empty input
+                if not input[data]:
+                    raise Exception(data)
+            except:
+                error_message.append({"error" :data + ' is required'})
+        #validating int data type
+        for data in validation_int_type :
+            try:
+                # Check for empty input
+                if not isinstance( input[data], int):
+                    raise Exception(data)
+            except:
+                error_message.append({"error":" invalid " + data + " type . integer recquired" })
+
+         #validating str datatype
+        for data in validation_str_type :
+            try:
+                # Check for empty input
+                if not isinstance( input[data], str):
+                    raise Exception(data)
+            except:
+                error_message.append({"error":" invalid " + data + " type .string recquired" })
+        # return errors
+        return error_message
