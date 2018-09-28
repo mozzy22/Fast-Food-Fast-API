@@ -2,7 +2,6 @@
 
 import uuid
 import datetime
-from flask import request
 __author__ = "Mutesasira Moses"
 
 class Orders:
@@ -161,7 +160,7 @@ class Orders:
                 input[data]
                 # Check for empty input
                 if not input[data]:
-                    raise Exception(data)
+                    raise Exception
             except:
                 error_message.append({"error" :data + ' is required'})
         #validating int data type
@@ -179,7 +178,7 @@ class Orders:
         try:
             # Check for empty input
             if not isinstance(input[data], data_type):
-                raise Exception(data)
+                raise Exception
 
         except:
             error_message.append({"error": " invalid " + str(data) + " data_type .<" + data_type.__name__ +"> recquired"})
