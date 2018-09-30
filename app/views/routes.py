@@ -2,10 +2,12 @@
 
 from flask import Flask, jsonify, request
 from app.views.menu_blueprint import My_blue,order_obj
+from app.views.user_blueprint import user_blue
 
 
 My_app = Flask(__name__)
 My_app.register_blueprint(My_blue)
+My_app.register_blueprint(user_blue)
 
 
 # A function to fetch all orders
