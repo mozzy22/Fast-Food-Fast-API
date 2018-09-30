@@ -1,6 +1,7 @@
 import re
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.models.db_user_sql_queries import UserQueries
 
 class User:
 
@@ -12,6 +13,7 @@ class User:
         self.password = ""
         self.created_at = None
         self.admin = False
+        self.querry = UserQueries()
         self.user = {}
         self.users_list = []
 
@@ -46,16 +48,10 @@ class User:
         self.password = generate_password_hash(pasword, method="sha256")
         self.created_at = datetime.datetime.now()
         self.admin = False
-        self.user = {
-          "first_name" : self.first_name,
-          "last_name" : self.last_name,
-          "user_name": self.user_name,
-          "email" :self.email,
-          "password" : self.password ,
-          "created_at" : self.created_at,
-          "admin" : self.admin
-        }
-        self.users_list.append(self.user)
+        self.querry.insert_user(self.first_name,self.last_name, self.user_name, self.email,
+                                self.password, self.created_at, self.admin)
+        return self.querry.get_user(self.user_name)
+
 
     def validate_user_obj(self, user_obj):
         "A method to validate a food object"
@@ -67,10 +63,12 @@ class User:
     def check_existing_user(self,user_name, email):
         "a method to check whethr a given order already exists"
         exist = False
-        for user in self.users_list:
+        for user in self.querry.get_all_users(self.users_list):
             if user["user_name"] == user_name or user["email"] == email:
                 exist = True
                 break
             else:
                 exist = False
         return exist
+
+

@@ -21,7 +21,7 @@ class DbConn :
                email     TEXT NOT NULL UNIQUE ,
                password   TEXT NOT NULL,
                created_at  DATE NOT NULL ,
-               admin BOOLEAN 
+               admin BOOLEAN NOT NULL
                 ); ''')
         print("Table users created successfully")
 
@@ -48,8 +48,8 @@ class DbConn :
                             user_id    INT    references Users(user_id) NOT NULL,
                             food_id   INT     references Menu(food_id) NOT NULL,
                             order_uuid   UUID NOT NULL ,
-                            created_at  DATE NOT NULL ,
-                            status   TEXT   NOT NULL UNIQUE,
+                            created_at  TEXT NOT NULL ,
+                            status   TEXT   NOT NULL ,
                             quantity INT NOT NULL
                              ); ''')
         print("Table orders created successfully")
@@ -58,9 +58,9 @@ class DbConn :
         self.conn.commit()
         self.conn.close()
 
-con = DbConn()
-con.create_connection()
-con.create_users_table()
-con.create_menu_table()
-con.create_orders_table()
-con.close_DB()
+# con = DbConn()
+# con.create_connection()
+# con.create_users_table()
+# con.create_menu_table()
+# con.create_orders_table()
+# con.close_DB()

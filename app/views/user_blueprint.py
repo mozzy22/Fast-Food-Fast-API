@@ -6,7 +6,7 @@ user_blue = Blueprint('user_b', __name__ )
 user_obj = User()
 
 
-@user_blue.route('/check', methods =['POST'])
+@user_blue.route('/auth/signup', methods =['POST'])
 def user_signup():
     new_user =request.json
 
@@ -32,5 +32,5 @@ def user_signup():
         return jsonify(invalid_password)
     if user_obj.check_existing_user(new_user_name,new_email):
         return jsonify({"error": "user name or email already exists"})
-    user_obj.add_user(new_first_name,new_last_name,new_user_name,new_email,new_password)
-    return jsonify(user_obj.users_list)
+    return jsonify(user_obj.add_user(new_first_name,new_last_name,new_user_name,new_email,new_password))
+    # return jsonify(user_obj.users_list)

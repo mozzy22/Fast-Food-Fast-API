@@ -2,18 +2,20 @@
 
 import uuid
 import datetime
+from app.models.db_order_sql_queries import DbQueries
 __author__ = "Mutesasira Moses"
 
 class Orders:
     "a model class for the orders made by clients"
 
 # declaring status constants
-    STATUS1 = "Pending"
-    STATUS2 = "Accepted"
-    STATUS3 = "Rejected"
-    STATUS4 = "Completed"
+    STATUS1 = "New"
+    STATUS2 = "Processing"
+    STATUS3 = "Cancelled"
+    STATUS4 = "Complete"
 
     def __init__(self):
+        self.querry = DbQueries()
         "innitialising all class members of the order - model"
         self.orders_list = []
         self.order = {}
@@ -35,30 +37,23 @@ class Orders:
 
     def get_all_orders(self):
         "a method that gets all orders"
+        self.querry.get_orders(self.orders_list)
         return self.orders_list
 
 
     def place_order(self, order_food_id, order_quantity, order_client):
         "A method to place a new order"
-        self.order_id = len(self.orders_list) + 1
-        self.order_uuid = str(uuid.uuid1())
+        self.order_uuid = uuid.uuid1()
         self.order_food_id = order_food_id
         self.order_quantity = order_quantity
         self.order_created_at = datetime.datetime.now().strftime('%Y-%m-%d-%H')
         self.order_status = Orders.STATUS1
         self.order_client = order_client
 
-        self.order = {
-            "order_id" : self.order_id,
-            "order_uuid" : self.order_uuid,
-            "order_food_id" : self.order_food_id,
-            "order_quantity" : self.order_quantity,
-            "order_created_at" : self.order_created_at,
-            "order_status"  : self.order_status,
-            "order_client" : self.order_client
-        }
-        self.orders_list.append(self.order)
-        return self.order
+        self.querry.insert_orders(self.order_client, self.order_food_id, self.order_uuid, self.order_created_at,
+                                  self.order_status, self.order_quantity)
+        return self.querry.fetch_order(self.order_uuid)
+
 
     def validate_order_obj(self, order_Obj):
         "A method to validate a user object"
@@ -69,20 +64,13 @@ class Orders:
 
     def get_all_foods(self):
         "A method to return all availabe food list"
-        return self.food_list
+        return self.querry.get_all_foods(self.food_list)
 
 
     def add_food(self, food_name, food_price):
         "A  method to add foods items to the menu"
-        self.food_id = len(self.food_list) + 1
-        self.food_name = food_name
-        self.food_price = str(food_price) + "$"
-        self.food = {
-            "food_id": self.food_id,
-            "food_name": self.food_name,
-            "food_price": self.food_price}
-        self.food_list.append(self.food)
-        return self.food
+        self.querry.insert_food(food_name, food_price)
+        return self.querry.get_food(food_name)
 
 
     def validate_food_obj(self, food_Obj):
@@ -97,7 +85,7 @@ class Orders:
         exist = False
         order_created_at = datetime.datetime.now().strftime('%Y-%m-%d-%H')
 
-        for order in self.orders_list:
+        for order in self.querry.get_orders(self.orders_list):
             if order["order_food_id"] == order_food_id and order["order_client"] == order_client \
                     and order["order_created_at"] == order_created_at:
                 exist = True
@@ -115,7 +103,7 @@ class Orders:
         elif isinstance(value, str):
             key =  "food_name"
         exist = False
-        for food in self.food_list:
+        for food in self.querry.get_all_foods(self.food_list):
             if food[key] == value:
                 exist = True
                 break
@@ -127,29 +115,24 @@ class Orders:
 
     def fetch_order_by_uuid(self, order_uuid):
         "A method to fetch a specific order"
-        my_order = {}
-        for order in self.orders_list:
-            if order["order_uuid"] == order_uuid:
-                my_order = order
-                break
-            else:
-                pass
-        return my_order
+        return self.querry.fetch_order(order_uuid)
+
 
     def update_order_status(self, order_uuid, status):
         my_order = self.fetch_order_by_uuid(order_uuid)
         if my_order:
             if status == "yes":
-                my_order["order_status"] = Orders.STATUS2
+                self.querry.update_order_status(Orders.STATUS2, order_uuid)
             elif status == "no":
-                my_order["order_status"] = Orders.STATUS3
+                self.querry.update_order_status(Orders.STATUS3, order_uuid)
             elif status == "ok":
-                my_order["order_status"] = Orders.STATUS4
+                self.querry.update_order_status(Orders.STATUS4, order_uuid)
             else:
-                my_order["order_status"] = Orders.STATUS1
+                pass
         else:
             pass
-        return my_order
+        return self.querry.fetch_order(order_uuid)
+
 
     def validate_input(self,input, validation_data,validation_int_type, validation_str_type ):
         "method to validate input"

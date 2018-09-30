@@ -2,6 +2,7 @@
 class Config():
     """Parent configuration class."""
     DEBUG = False
+    SECRET_KEY = "mozzy"
 
 class DevelopmentConfig(Config):
     """Configurations for Development."""

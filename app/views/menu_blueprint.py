@@ -6,7 +6,7 @@ My_blue = Blueprint('menu', __name__ )
 order_obj = Orders()
 
 #A function for admin to add food items to the menu
-@My_blue.route('/api/v1/menu/add', methods=['POST'])
+@My_blue.route('/api/v1/menu', methods=['POST'])
 def add_food_items():
     "A function that adds food items"
 

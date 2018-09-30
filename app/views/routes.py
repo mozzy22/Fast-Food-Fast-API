@@ -31,7 +31,7 @@ def place_order():
 
          #validating empty input and input data type
         invalid_input = order_obj.validate_input(new_oder, ["order_food_id", "order_quantity", "order_client" ]
-                                               ,["order_quantity","order_food_id"], ["order_client" ])
+                                               ,["order_quantity","order_food_id", "order_client"], [ ])
         if invalid_input:
             return jsonify(invalid_input), 400
 
