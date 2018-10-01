@@ -73,11 +73,14 @@ class UserQueries:
         self.conn.commit()
         # self.conn.close()
 
+
+
 if __name__ == "__main__":
       db = UserQueries()
-#     list = []
-#     # print(db.get_user("mo"))
-#     print(db.get_all_users(list))
-#     # db.insert_user("moses","mutesasira", "mogg", "gmaiggl", "afafaf" , "12/11/11", True)
-
-      db.authorise_user("mozzy", True)
+      list = []
+    # print(db.get_user("mo"))
+      print(db.get_all_users(list))
+# # #     # db.insert_user("moses","mutesasira", "mogg", "gmaiggl", "afafaf" , "12/11/11", True)
+# #
+# #       # db.authorise_user("mozzy", True)
+#       print(db.login_user("mozzy3", "moses"))

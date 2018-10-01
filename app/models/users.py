@@ -1,7 +1,13 @@
 import re
+import jwt
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import current_app
 from app.models.db_user_sql_queries import UserQueries
+
+
+
+
 
 class User:
 
@@ -71,4 +77,28 @@ class User:
                 exist = False
         return exist
 
+    def validate_login_obj(self, login_obj):
+        "A method to validate a food object"
+        if ("user_name" in login_obj and "password" in login_obj ):
+            return True
+        return False
+
+    def validate_login_user(self, username, password):
+         login_user = {}
+         for user in self.querry.get_all_users(self.users_list):
+             if user['user_name'] == username and check_password_hash(user["password"], password):
+                 login_user =user
+                 break;
+             pass
+
+         return login_user
+
+
+    def generate_auth_token(self, user_name):
+        token = jwt.encode( {
+                            "user_name" :user_name,
+                             "exp" : datetime.datetime.utcnow() + datetime.timedelta(minutes = 30) },
+                             current_app.config.get('SECRET_KEY') )
+
+        return token.decode('UTF-8')
 

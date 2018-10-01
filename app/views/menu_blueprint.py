@@ -1,5 +1,6 @@
 from flask import  Blueprint, jsonify, request
 from app.models.orders import Orders
+from app.views.user_blueprint import token_required
 
 My_blue = Blueprint('menu', __name__ )
 #from routes import order_obj
@@ -36,7 +37,8 @@ def add_food_items():
 
 #a function to fetch all foods list by admin
 @My_blue.route('/api/v1/menu', methods=['GET'])
-def get_all_foods_list():
+@token_required
+def get_all_foods_list(current_user):
     "A function to fetch all menu food items"
     return jsonify(order_obj.get_all_foods()), 200
 
