@@ -57,8 +57,7 @@ class Orders:
 
     def validate_order_obj(self, order_Obj):
         "A method to validate a user object"
-        if ("order_food_id" in order_Obj and "order_quantity" in order_Obj and
-                    "order_client" in order_Obj):
+        if ("order_food_id" in order_Obj and "order_quantity" in order_Obj ):
             return True
         return False
 

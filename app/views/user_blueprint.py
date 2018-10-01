@@ -57,14 +57,10 @@ def login():
       validate_login_user = user_obj.validate_login_user(user_name,user_password)
 
       if not validate_login_user:
-          return jsonify({"error":"invalid login credentials"})
-      user = {"user_id": validate_login_user["user_id"],
-              "user_name": validate_login_user["user_name"],
-              "user_email": validate_login_user["email"]
-              }
-      token = user_obj.generate_auth_token(validate_login_user["user_name"])
-      return jsonify({"token": token})
+          return jsonify({"error":"invalid login credentials"}), 401
 
+      token = user_obj.generate_auth_token(validate_login_user["user_id"])
+      return jsonify({"token": token}) ,200
 
 
 def token_required(func):
@@ -76,14 +72,15 @@ def token_required(func):
             token = request.headers["acces-token"]
 
         if not token:
-            return jsonify({"error": "missing token"})
+            return jsonify({"error": "missing token"}), 400
 
         try :
             data = jwt.decode(token, current_app.config.get('SECRET_KEY') )
-            current_user =  querry.get_user(data["user_name"])
+            current_user =  data["user_id"]
+
 
         except:
-            return jsonify({"error": "invalid token"})
+            return jsonify({"error": "invalid token"}), 401
 
         return func(current_user, *args, **kwargs)
     return authenticate

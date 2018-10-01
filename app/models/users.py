@@ -94,11 +94,16 @@ class User:
          return login_user
 
 
-    def generate_auth_token(self, user_name):
-        token = jwt.encode( {
-                            "user_name" :user_name,
-                             "exp" : datetime.datetime.utcnow() + datetime.timedelta(minutes = 30) },
-                             current_app.config.get('SECRET_KEY') )
+    def generate_auth_token(self, user_id):
+
+        payload = {
+            #user name
+            "user_id": user_id,
+
+            #expiry ate of token
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30) }
+
+        token = jwt.encode( payload, current_app.config.get('SECRET_KEY'),algorithm='HS256' )
 
         return token.decode('UTF-8')
 

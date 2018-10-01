@@ -3,23 +3,32 @@
 from flask import Flask, jsonify, request
 from app.views.menu_blueprint import My_blue,order_obj
 from app.views.user_blueprint import user_blue
+from app.views.user_blueprint import token_required
+from app.models.db_user_sql_queries import UserQueries
 
 
 My_app = Flask(__name__)
 My_app.register_blueprint(My_blue)
 My_app.register_blueprint(user_blue)
-
+querry = UserQueries()
 
 # A function to fetch all orders
 @My_app.route('/api/v1/orders', methods=['GET'])
-def get_all_orders():
+@token_required
+def get_all_orders(current_user):
     "A function to fetch all orders"
+
+    if not querry.check_admin(current_user) :
+        return jsonify({"error": "only admin alowed"}), 401
+
     return jsonify(order_obj.get_all_orders()), 200
 
 
+
 #A function to place_order
-@My_app.route('/api/v1/orders', methods=['POST'])
-def place_order():
+@My_app.route('/api/v1/users/orders', methods=['POST'])
+@token_required
+def place_order(current_user):
     " a function to place an order"
     new_oder = request.json
 
@@ -27,11 +36,11 @@ def place_order():
     if order_obj.validate_order_obj(new_oder):
         order_food_id = new_oder["order_food_id"]
         order_quantity = new_oder["order_quantity"]
-        order_client = new_oder["order_client"]
+        order_client = current_user
 
          #validating empty input and input data type
-        invalid_input = order_obj.validate_input(new_oder, ["order_food_id", "order_quantity", "order_client" ]
-                                               ,["order_quantity","order_food_id", "order_client"], [ ])
+        invalid_input = order_obj.validate_input(new_oder, ["order_food_id", "order_quantity" ]
+                                               ,["order_quantity","order_food_id"], [ ])
         if invalid_input:
             return jsonify(invalid_input), 400
 
@@ -56,8 +65,11 @@ def place_order():
 
 #A function to fetch a specific order by uuid
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['GET'])
-def fetch_order(order_uuid):
+@token_required
+def fetch_order(current_user,order_uuid):
     "A function to fetch a specified order by uuid"
+    if not querry.check_admin(current_user):
+        return jsonify({"error": "only admin alowed"}), 401
 
     the_order = order_obj.fetch_order_by_uuid(order_uuid)
     if the_order:
@@ -67,9 +79,11 @@ def fetch_order(order_uuid):
 
 #A function that updates order status
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['PUT'])
-def update_order_status(order_uuid):
+@token_required
+def update_order_status(current_user,order_uuid):
     "A function to update the status of an order by uuid"
-
+    if not querry.check_admin(current_user):
+        return jsonify({"error": "only admin alowed"})
     new_status_obj = request.json
 
         #validating status object and status
