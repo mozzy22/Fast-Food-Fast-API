@@ -1,104 +1,97 @@
-"A module to test the status update feature"
-import unittest
-import json
-from app.views.routes import My_app, order_obj
-from app.views.menu_blueprint import order_obj
-from config.config import app_config
-from app.models.orders import Orders
+"A module to test get all orders feature"
+import uuid
+from tests.base_test import BaseTestCase
+class TestGetOrders(BaseTestCase):
+    "A class for testing the get all orders feature"
 
-class TestCase(unittest.TestCase):
-    "A class for testing the update status feature"
+    def test_update_statu(self):
 
-
-    def setUp(self):
-        " setting up variables to run before test"
-        self.hostname = "http://localhost:5000/api/v1/"
-        self.order_obj = Orders()
-        # valid status objet to be posted
-        self.status = {
-            "order_status" : "ok"
-        }
-
-      #invalid status to be pasted
-        self.invalid_status = {
-            "order_status": "null"
-        }
-      #invalid status format
-        self.invalid_status_obj = {
-            "orderstatus": "yes"
-        }
-
-        self.order = {
-            "order_id": 1,
-            "order_uuid": "rigt_uuid",
+        order1 = {
             "order_food_id": 1,
-            "order_quantity": "1",
-            "order_created_at": "13/04/2016",
-            "order_status": "pendng",
-            "order_client": "mutesasira"
+            "order_quantity": 10,}
+
+        order2 = {
+            "order_food_id": 2,
+            "order_quantity": 10, }
+
+        food = {
+            "food_name": "fish",
+            "food_price": 22
         }
 
-        My_app.config.from_object(app_config["testing"])
-        self.app = My_app.test_client()
-
-    #Testing the model method
-    def test_empty_order_list(self):
-        "asserting orders list is empty"
-        self.assertEqual(len(self.order_obj.orders_list), 0)
-
-    def test_update_valid_uuid(self):
-        "asserting that the method is updated"
-        self.order_obj.orders_list.append(self.order)
-        updated_order = self.order_obj.update_order_status("rigt_uuid", "ok")
-        self.assertEqual(updated_order['order_status'], "Completed")
-
-    def test_update_valid_uuid1(self):
-        "asserting that the method is updated"
-        self.order_obj.orders_list.append(self.order)
-        updated_order = self.order_obj.update_order_status("rigt_uuid", "yes")
-        self.assertEqual(updated_order['order_status'], "Accepted")
-
-    def test_update_valid_uuid2(self):
-        "asserting that the method is updated"
-        self.order_obj.orders_list.append(self.order)
-        updated_order = self.order_obj.update_order_status("rigt_uuid", "no")
-        self.assertEqual(updated_order['order_status'], "Rejected")
-
-    def test_update_invalid_uuid(self):
-        "asserting that the method is not updated with a wrong status"
-        self.order_obj.orders_list.append(self.order)
-        updated_order = self.order_obj.update_order_status("wrong_uuid", "no")
-        self.assertEqual(updated_order, {})
-
-     #Testing the routes
-
-    def test_put_valid_uuid_empty_orderlist(self):
-        "checking status code when order list is empty"
-        resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
-                            content_type='application/json')
-        self.assertEqual(resp.status_code, 400)
+        food2 = {
+            "food_name": "rice",
+            "food_price": 22
+        }
+        status1 = {"order_status": "ok"}
+        status2 = {"order_status": "yes"}
+        status3 = {"order_status": "no"}
+        unknown_status1 = {"order_status": "not sure"}
+        invalidstatus1 = {"order_status": 2}
+        invalid_status_object = {"order": "ok"}
+        empty_status = {"order": ""}
 
 
-    def test_put_valid_uuid_with_orderlist(self):
-        "checking status code when right order uuid is posted , with order list"
-        order_obj.orders_list.append(self.order)
-        resp = self.app.put(self.hostname + "orders/rigt_uuid", data=json.dumps(self.status),
-                            content_type='application/json')
-        self.assertEqual(resp.status_code, 200)
+
+        # test admin can add food
+        self.register_user(self.new_user)
+        resp1 = self.login_user(self.resgistered_user)
+        token = str(resp1.json["token"])
+
+        #make user admin
+        self.make_admin("mo1")
+
+        #check list length before post
+
+        resp2 = self.get_all_orders(token)
+        self.assertEqual(len(resp2.json), 0)
+
+        #check_list_after post
+
+        self.post_food(food, token)
+        self.post_food(food2, token)
+
+        # post orders
+        self.post_order(order1,token)
+        resp4 = self.post_order(order2, token)
+        uuid_1 = resp4.json["order_uuid"]
+
+        #test update specific order
+        resp5 = self.update_status(status1, uuid_1,token)
+        self.assertEqual(resp5.status_code, 200)
+
+        resp6 = self.update_status(status2, uuid_1, token)
+        self.assertEqual(resp6.status_code, 200)
+
+        resp7 = self.update_status(status3, uuid_1, token)
+        self.assertEqual(resp7.status_code, 200)
+
+        resp8 = self.update_status(unknown_status1, uuid_1, token)
+        self.assertEqual(resp8.status_code, 200)
+
+        resp9 = self.update_status(invalid_status_object, uuid_1, token)
+        self.assertEqual(resp9.status_code, 400)
+
+        resp10 = self.update_status(invalidstatus1, uuid_1, token)
+        self.assertEqual(resp10.status_code, 400)
+
+        resp11 = self.update_status(empty_status, uuid_1, token)
+        self.assertEqual(resp11.status_code, 400)
+
+        #test fetch order which doent exist
+        uuid_2 = uuid.uuid1()
+        resp12 = self.update_status(status1, uuid_2, token)
+        self.assertEqual(resp12.status_code, 400)
 
 
-    def test_put_invalid_status_with_orderlist(self):
-        "checking status code when invalid status object is posted"
-        order_obj.orders_list.append(self.order)
-        resp = self.app.put(self.hostname + "orders/rigt_uuid",
-                            data=json.dumps(self.invalid_status_obj), content_type='application/json')
-
-        self.assertEqual(resp.status_code, 400)
 
 
-    def tearDown(self):
-        self.order_obj.orders_list.clear()
-        order_obj.orders_list.clear()
+
+
+
+        # resp1 = self.post_food(food, token)
+        # self.assertEqual(resp1.status_code, 201)
+
 
 
 if __name__ == "__main__":

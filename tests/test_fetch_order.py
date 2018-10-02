@@ -1,70 +1,75 @@
-"A module dor testing the fetch order feature"
-import unittest
-from app.models.orders import Orders
-from app.views.routes import My_app
-from app.views.menu_blueprint import order_obj
-from config.config import app_config
+"A module to test get all orders feature"
+import uuid
+from tests.base_test import BaseTestCase
+class TestGetOrders(BaseTestCase):
+    "A class for testing the get all orders feature"
 
-class TestCase(unittest.TestCase):
-    "A test classs for fetch order feature"
+    def test_fetch_order(self):
+        order1 = {
+            "order_food_id": 1,
+            "order_quantity": 10,}
 
+        order2 = {
+            "order_food_id": 2,
+            "order_quantity": 10, }
 
-    def setUp(self):
-        " setting up variables to run before test"
-        self.order_obj = Orders()
-        self.hostname = "http://localhost:5000/api/v1/"
-        self.order = {
-            "order_id" : 1,
-            "order_uuid" : "rigt_uuid",
-            "order_food_id" : 1,
-            "order_quantity" : "1",
-            "order_created_at" : "13/04/2016",
-            "order_status" : "pendng",
-            "order_client" :"mutesasira"
+        food = {
+            "food_name": "fish",
+            "food_price": 22
         }
-        My_app.config.from_object(app_config["testing"])
-        self.app = My_app.test_client()
 
-    def test_empty_list(self):
-        "A mehtod to test empty model orders list"
-        self.assertEqual(len(self.order_obj.get_all_orders()), 0)
+        food2 = {
+            "food_name": "rice",
+            "food_price": 22
+        }
 
-    def test_fetch_order_method(self):
-        "testing model fetch order method  returns an order with valid uuid"
-        self.order_obj.orders_list.append(self.order)
-        self.assertEqual(self.order_obj.fetch_order_by_uuid("rigt_uuid"), self.order)
+        # test admin can add food
+        self.register_user(self.new_user)
+        resp1 = self.login_user(self.resgistered_user)
+        token = str(resp1.json["token"])
 
-    def test_fetch_order_method_wrong_uuid(self):
-        "testing model fetch order method doesnt return an order with invalid uuid"
-        self.order_obj.orders_list.append(self.order)
-        self.assertEqual(self.order_obj.fetch_order_by_uuid("wrong_uuid"), {})
+        resp0 = self.get_all_orders(token)
+        self.assertEqual(resp0.status_code, 401)
 
-    def test_fetch_order_method_wrong_uuid2(self):
-        "testing model fetch order method doesnt return an order with invalid uuid"
-        self.order_obj.orders_list.append(self.order)
-        self.assertEqual(len(self.order_obj.fetch_order_by_uuid("wrong_uuid")), 0)
+        #make user admin
+        self.make_admin("mo1")
 
-    def test_right_get_method(self):
-        "asserting a correct method returns an empty response if order list is empty"
-        resp = self.app.get(self.hostname + "orders/string-uuid")
-        self.assertEqual(resp.status_code, 404)
+        #check list length before post
 
-    def test_status_code_for_right_uuid(self):
-        "asserting a request with invalid uuid is  returned"
-        order_obj.orders_list.append(self.order)
-        resp = self.app.get(self.hostname + "orders/rigt_uuid")
-        self.assertEqual(resp.status_code, 200)
 
-    def test_status_code_for_invalid_uuid(self):
-        "asserting a request with invalid uuid is not returned"
-        order_obj.orders_list.append(self.order)
-        resp = self.app.get(self.hostname + "orders/wrong_uuid")
-        self.assertEqual(resp.status_code, 404)
+        resp2 = self.get_all_orders(token)
+        self.assertEqual(len(resp2.json), 0)
 
-    def tearDown(self):
-        "A method to reset data structures"
-        order_obj.orders_list.clear()
-        self.order_obj.orders_list.clear()
+        #check_list_after post
+
+        self.post_food(food, token)
+        self.post_food(food2, token)
+
+        # post orders
+        self.post_order(order1,token)
+        resp4 = self.post_order(order2, token)
+        uuid_1 = resp4.json["order_uuid"]
+
+        #test fetch specific order
+        resp5 = self.fetch_specific_order(uuid_1, token)
+        self.assertEqual(resp5.status_code, 200)
+
+        #test fetch order which doent exist
+        uuid_2 = uuid.uuid1()
+        resp6 = self.fetch_specific_order(uuid_2, token)
+        self.assertEqual(resp6.status_code, 404)
+
+
+        resp3 = self.get_all_orders(token)
+        self.assertEqual(len(resp3.json), 2)
+        self.assertEqual(resp3.status_code, 200)
+
+
+
+
+
+        # resp1 = self.post_food(food, token)
+        # self.assertEqual(resp1.status_code, 201)
 
 
 

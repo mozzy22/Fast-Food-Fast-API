@@ -1,15 +1,20 @@
 from flask import  Blueprint, jsonify, request
 from app.models.orders import Orders
+from app.views.user_blueprint import token_required
+from app.models.db_user_sql_queries import UserQueries
 
 My_blue = Blueprint('menu', __name__ )
 #from routes import order_obj
 order_obj = Orders()
+querry = UserQueries()
 
 #A function for admin to add food items to the menu
-@My_blue.route('/api/v1/menu/add', methods=['POST'])
-def add_food_items():
+@My_blue.route('/api/v1/menu', methods=['POST'])
+@token_required
+def add_food_items(current_user):
     "A function that adds food items"
-
+    if not querry.check_admin(current_user):
+        return jsonify({"error" : "only admin alowed"}), 401
     new_food = request.json
 
     # validating food object
@@ -36,9 +41,18 @@ def add_food_items():
 
 #a function to fetch all foods list by admin
 @My_blue.route('/api/v1/menu', methods=['GET'])
-def get_all_foods_list():
+@token_required
+def get_all_foods_list(current_user):
     "A function to fetch all menu food items"
     return jsonify(order_obj.get_all_foods()), 200
+
+
+
+@My_blue.route('/api/v1/users/orders', methods = ["GET"])
+@token_required
+def get_user_order_history(current_user):
+
+    return  jsonify(querry.get_user_Order_history(current_user)), 200
 
 
 #A function to act as index page , to offer description to the user
@@ -46,9 +60,12 @@ def get_all_foods_list():
 def index():
     "A function to act as the index page for the API"
     return   jsonify( {"Get all orders" : "GET, api/v1/orders",
-                      "Place anew order " :"POST ,  api/v1/orders",
+                       "Register User": "POST, api/v1/auth/signup",
+                       "Login user": "POST , api/v1/auth/login",
+                       "Get user order History": "GET, api/v1/users/order",
+                      "Place anew order " :"POST ,  api/v1/users/orders",
                       "Fetch a specific order" : "GET , api/v1/orders/oder-uuid",
                       "Update an order status" : "PUT, api/v1/orders/order-uuid",
                       "Fetch all food items on the menu" : "GET, api/v1/menu",
-                      "Add food item to menu" : "POST, api/v1/menu/add ",
+                      "Add food item to menu" : "POST, api/v1/menu ",
                       "Index page" : " GET  ,/"} ), 200
