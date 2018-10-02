@@ -37,8 +37,8 @@ class Orders:
 
     def get_all_orders(self):
         "a method that gets all orders"
-        self.querry.get_orders(self.orders_list)
-        return self.orders_list
+        return self.querry.get_orders(self.orders_list)
+
 
 
     def place_order(self, order_food_id, order_quantity, order_client):

@@ -119,6 +119,8 @@ class DbQueries():
         # self.conn.close()
         return food_list
 
+    def close_conn(self):
+        DbConn().close_DB()
 
 # if __name__ == "__main__":
 #     x = DbQueries()

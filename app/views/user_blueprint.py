@@ -15,9 +15,8 @@ querry = UserQueries()
 @user_blue.route('/api/v1/auth/signup', methods =['POST'])
 def user_signup():
     new_user =request.json
-
     if not user_obj.validate_user_obj(new_user):
-        return jsonify({"error": "ivalid user obj"})
+        return jsonify({"error": "ivalid user obj"}), 400
 
     new_first_name  = new_user["first_name"]
     new_last_name = new_user["last_name"]
@@ -30,29 +29,29 @@ def user_signup():
                                            [],["first_name","last_name","user_name","email", "password"] )
 
     if invalid_input:
-        return jsonify(invalid_input)
+        return jsonify(invalid_input), 400
     if not user_obj.validate_email(new_email):
-        return jsonify({"error": "invalid email"})
+        return jsonify({"error": "invalid email"}), 400
 
     if invalid_password:
-        return jsonify(invalid_password)
+        return jsonify(invalid_password), 400
     if user_obj.check_existing_user(new_user_name,new_email):
-        return jsonify({"error": "user name or email already exists"})
-    return jsonify(user_obj.add_user(new_first_name,new_last_name,new_user_name,new_email,new_password))
+        return jsonify({"error": "user name or email already exists"}), 400
+    return jsonify(user_obj.add_user(new_first_name,new_last_name,new_user_name,new_email,new_password)), 201
     # return jsonify(user_obj.users_list)
 
 @user_blue.route('/api/v1/auth/login', methods = ["POST"])
 def login():
       login_input = request.json
       if not user_obj.validate_login_obj( login_input):
-           return jsonify({"error":"invalid login object"})
+           return jsonify({"error":"invalid login object"}), 400
 
       user_name = login_input["user_name"]
       user_password = login_input["password"]
       invalid_input = order_obj.validate_input(login_input, ["user_name","password"], [], ["user_name","password"])
 
       if invalid_input:
-          return jsonify(invalid_input)
+          return jsonify(invalid_input), 400
 
       validate_login_user = user_obj.validate_login_user(user_name,user_password)
 

@@ -1,11 +1,22 @@
 import psycopg2
+from flask import current_app
 
 class DbConn :
 
     def create_connection(self):
         "A function to set up database connection"
-        self.conn = psycopg2.connect(database = "fast_food", user = "moses", password = "moses", host = "127.0.0.1", port = "5432")
-        return self.conn
+        # self.conn = None
+        try:
+
+            self.conn = psycopg2.connect(database="fast_food", user="moses", password="moses",
+                                         host="127.0.0.1",
+                                         port="5432")
+            return self.conn
+
+
+        except  (psycopg2.DatabaseError) as error :
+            print(error)
+
 
 
 
@@ -24,10 +35,10 @@ class DbConn :
                admin BOOLEAN NOT NULL
                 ); ''')
         print("Table users created successfully")
-
+        self.conn.commit()
 
     def create_menu_table(self):
-        "A function to create the users_table"
+        "A function to create the menu table"
         cur = self.conn.cursor()
 
         cur.execute('''CREATE TABLE IF NOT EXISTS Menu
@@ -36,11 +47,11 @@ class DbConn :
                       food_price  MONEY NOT NULL
                       ); ''')
         print("Table menu created successfully")
-
+        self.conn.commit()
 
 
     def create_orders_table(self):
-        "A function to create the ticket table"
+        "A function to create the orders table"
         cur = self.conn.cursor()
 
         cur.execute('''CREATE TABLE IF NOT EXISTS orders
@@ -53,14 +64,14 @@ class DbConn :
                             quantity INT NOT NULL
                              ); ''')
         print("Table orders created successfully")
-
-    def close_DB(self):
         self.conn.commit()
+    def close_DB(self):
+
         self.conn.close()
 
-# con = DbConn()
-# con.create_connection()
-# con.create_users_table()
-# con.create_menu_table()
-# con.create_orders_table()
-# con.close_DB()
+con = DbConn()
+con.create_connection()
+con.create_users_table()
+con.create_menu_table()
+con.create_orders_table()
+con.close_DB()

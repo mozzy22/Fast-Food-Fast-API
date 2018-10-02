@@ -60,9 +60,12 @@ def get_user_order_history(current_user):
 def index():
     "A function to act as the index page for the API"
     return   jsonify( {"Get all orders" : "GET, api/v1/orders",
-                      "Place anew order " :"POST ,  api/v1/orders",
+                       "Register User": "POST, api/v1/auth/signup",
+                       "Login user": "POST , api/v1/auth/login",
+                       "Get user order History": "GET, api/v1/users/order",
+                      "Place anew order " :"POST ,  api/v1/users/orders",
                       "Fetch a specific order" : "GET , api/v1/orders/oder-uuid",
                       "Update an order status" : "PUT, api/v1/orders/order-uuid",
                       "Fetch all food items on the menu" : "GET, api/v1/menu",
-                      "Add food item to menu" : "POST, api/v1/menu/add ",
+                      "Add food item to menu" : "POST, api/v1/menu ",
                       "Index page" : " GET  ,/"} ), 200

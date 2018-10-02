@@ -129,6 +129,8 @@ class UserQueries:
         # self.conn.close()
         return admin
 
+    def close_conn(self):
+        DbConn().close_DB()
 
 # if __name__ == "__main__":
 #       db = UserQueries()

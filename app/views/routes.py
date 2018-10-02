@@ -101,7 +101,7 @@ def update_order_status(current_user,order_uuid):
 
         message = ({"error": "unable to find order"})
     else:
-        message = {"error": "invalid status object . must be {'order_status':  }"}
+        message = {"error": "invalid status object . must be {'order_status':}"}
     return jsonify(message), 400
 
 #error handlers
