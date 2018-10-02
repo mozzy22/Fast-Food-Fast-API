@@ -8,7 +8,7 @@ class DbConn :
         # self.conn = None
         try:
 
-            self.conn = psycopg2.connect(database="fast_food", user="moses", password="moses",
+            self.conn = psycopg2.connect(database="fast_food", user="postgres", password="moses",
                                          host="127.0.0.1",
                                          port="5432")
             return self.conn
