@@ -1,9 +1,11 @@
 import psycopg2
-from flask import current_app
 
 class DbConn :
 
+
+
     def create_connection(self):
+        "A function to set up database connection"
         "A function to set up database connection"
         # self.conn = None
         try:
@@ -14,12 +16,8 @@ class DbConn :
             return self.conn
 
 
-        except  (psycopg2.DatabaseError) as error :
-            print(error)
-
-
-
-
+        except Exception :
+            print("Dtabase connection error ")
     def create_users_table(self):
         "A function to create the users_table"
         cur = self.conn.cursor()
@@ -34,7 +32,7 @@ class DbConn :
                created_at  DATE NOT NULL ,
                admin BOOLEAN NOT NULL
                 ); ''')
-        print("Table users created successfully")
+        # print("Table users created successfully")
         self.conn.commit()
 
     def create_menu_table(self):
@@ -46,7 +44,7 @@ class DbConn :
                       food_name    TEXT    NOT NULL UNIQUE,
                       food_price  MONEY NOT NULL
                       ); ''')
-        print("Table menu created successfully")
+        # print("Table menu created successfully")
         self.conn.commit()
 
 
@@ -63,7 +61,7 @@ class DbConn :
                             status   TEXT   NOT NULL ,
                             quantity INT NOT NULL
                              ); ''')
-        print("Table orders created successfully")
+        # print("Table orders created successfully")
         self.conn.commit()
     def close_DB(self):
 

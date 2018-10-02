@@ -1,4 +1,5 @@
 import unittest
+import psycopg2
 from app.views.routes import My_app
 from config.config import app_config
 from app.models.db_connection import DbConn
