@@ -1,12 +1,10 @@
-import re
-import jwt
 import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask import current_app
+import re
+
+import jwt
 from app.models.db_user_sql_queries import UserQueries
-
-
-
+from flask import current_app
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User:

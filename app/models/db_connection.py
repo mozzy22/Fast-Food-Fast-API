@@ -1,5 +1,6 @@
 import psycopg2
 from urllib.parse import urlparse
+import os
 
 class DbConn :
 
@@ -10,9 +11,32 @@ class DbConn :
         "A function to set up database connection"
         # self.conn = None
         try:
+            if os.getenv('APP') == "testing":
+                self.conn = psycopg2.connect(database="fast_food_test", user="postgres", password="moses",
+                                             host="127.0.0.1",port="5432")
+
+                return self.conn
+
+            elif os.getenv('FLASK_ENV') == "heroku":
+
+                url = "postgres://bqpdlaosdiimxb:bd0d1d8e01750838c6c97bad019f507eceac47bfd1dc4ea92693ea62318e4900@ec2-54" \
+                      "-243-54-6.compute-1.amazonaws.com:5432/daf8s092fehhf3"
+
+                parsed_url = urlparse(url)
+                db = parsed_url.path[1:]
+                username = parsed_url.username
+                hostname = parsed_url.hostname
+                password = parsed_url.password
+                port = parsed_url.port
+
+                self.conn = psycopg2.connect(
+                    database=db, user=username, password=password,
+                    host=hostname, port=port
+                )
+                return self.conn
             self.conn = psycopg2.connect(database="fast_food", user="postgres", password="moses",
-                                         host="127.0.0.1",
-                                         port="5432")
+                                         host="127.0.0.1", port="5432")
+
             return self.conn
 
         except Exception :

@@ -1,0 +1,26 @@
+Authentication docs
+---
+tags:
+ - User Authentication
+parameters:
+  - in: body
+    name: body
+    required: true
+    type: string
+    description: This route signs in an existing user.
+
+    schema:
+      id: login
+      properties:
+        user name:
+          type: string
+          default: mozzy
+        password:
+          type: string
+          default: pass11wa8
+responses:
+  201:
+    description: User account successfully created.
+
+  400:
+    description: Empty order fields

@@ -1,8 +1,10 @@
 "A module for the orders model"
 
-import uuid
 import datetime
+import uuid
+
 from app.models.db_order_sql_queries import DbQueries
+
 __author__ = "Mutesasira Moses"
 
 class Orders:

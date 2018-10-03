@@ -1,10 +1,11 @@
-from flask import  Blueprint, jsonify, request, current_app
-from app.models.users import User
-from app.models.orders import Orders
-from app.models.db_user_sql_queries import UserQueries
 from functools import wraps
 import jwt
-
+from app.models.orders import Orders
+from app.models.users import User
+from app.models. db_user_sql_queries import UserQueries
+from flasgger import swag_from
+from flask import Blueprint, jsonify, request, current_app
+from flask import redirect
 
 user_blue = Blueprint('user_b', __name__ )
 user_obj = User()
@@ -13,6 +14,7 @@ querry = UserQueries()
 
 
 @user_blue.route('/api/v1/auth/signup', methods =['POST'])
+@swag_from('../docs/signup.yml')
 def user_signup():
     new_user =request.json
     if not user_obj.validate_user_obj(new_user):
@@ -41,6 +43,7 @@ def user_signup():
     # return jsonify(user_obj.users_list)
 
 @user_blue.route('/api/v1/auth/login', methods = ["POST"])
+@swag_from('../docs/login.yml')
 def login():
       login_input = request.json
       if not user_obj.validate_login_obj( login_input):
@@ -61,6 +64,9 @@ def login():
       token = user_obj.generate_auth_token(validate_login_user["user_id"])
       return jsonify({"token": token}) ,200
 
+@user_blue.route("/")
+def main():
+    return redirect("apidocs/")
 
 def token_required(func):
     @wraps(func)
