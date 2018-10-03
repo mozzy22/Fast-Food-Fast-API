@@ -60,7 +60,8 @@ def get_user_order_history(current_user):
 
 
 #A function to act as index page , to offer description to the user
-# @My_blue.route('/', methods=['GET'])
+@My_blue.route('/menu', methods=['GET'])
+@swag_from('../docs/index.yml')
 def index():
     "A function to act as the index page for the API"
     return   jsonify( {"Get all orders" : "GET, api/v1/orders",
