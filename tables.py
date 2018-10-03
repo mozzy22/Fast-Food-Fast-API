@@ -1,4 +1,4 @@
-from app.models.db_connection import DbConn
+from models import DbConn
 
 db_obj = DbConn()
 con  = db_obj.create_connection()

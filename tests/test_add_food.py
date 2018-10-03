@@ -1,6 +1,6 @@
 "A module for testing the add food feature"
 import unittest
-import json
+
 from tests.base_test import BaseTestCase
 from app.views.menu_blueprint import order_obj
 

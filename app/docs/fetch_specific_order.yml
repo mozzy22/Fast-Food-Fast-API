@@ -1,0 +1,18 @@
+Place order
+---
+tags:
+    - Orders
+
+responses:
+  200:
+    description: Question found in databse.
+  404:
+    description: Question not found in database.
+security:
+  - JWT:
+      description: Pass in jwt token. i.e Bearer <jwt>
+      type: apiKey
+      scheme: bearer
+      name: Authorization
+      in: header
+      bearerFormat: JWT

@@ -1,0 +1,35 @@
+Method to place order
+---
+tags:
+    - Orders
+parameters:
+    - in: body
+      name: body
+      required: true
+      type: string
+      description: Place order
+      schema:
+          id: placeorder
+          properties:
+                orderfood:
+                  ype: string
+                  default: cassava
+                order_food_id:
+                   type: integer
+                   default: 3
+responses:
+  201:
+    description: Answer successfully added to question.
+
+  400:
+    description: invalid order object.
+  404:
+    description: Order not found in database.
+security:
+  - JWT:
+      description: Pass in jwt token.
+      type: apiKey
+      scheme: bearer
+      name: Authorization
+      in: header
+      bearerFormat: JWT

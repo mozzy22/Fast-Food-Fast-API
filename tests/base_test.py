@@ -1,11 +1,11 @@
+import json
 import unittest
-import psycopg2
+
+from app.models.db_connection import DbConn
+from app.models.orders import Orders
 from app.views.routes import My_app
 from config.config import app_config
-from app.models.db_connection import DbConn
 from app.models.db_user_sql_queries import UserQueries
-from app.models.orders import Orders
-import json
 
 
 class BaseTestCase(unittest.TestCase):

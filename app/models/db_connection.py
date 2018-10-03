@@ -1,5 +1,6 @@
 import psycopg2
 from urllib.parse import urlparse
+import os
 
 class DbConn :
 
@@ -10,9 +11,15 @@ class DbConn :
         "A function to set up database connection"
         # self.conn = None
         try:
+            if os.getenv('APP') == "testing":
+                self.conn = psycopg2.connect(database="fast_food_test", user="postgres", password="moses",
+                                             host="127.0.0.1",port="5432")
+
+                return self.conn
+
             self.conn = psycopg2.connect(database="fast_food", user="postgres", password="moses",
-                                         host="127.0.0.1",
-                                         port="5432")
+                                         host="127.0.0.1", port="5432")
+
             return self.conn
 
         except Exception :

@@ -1,20 +1,23 @@
 "A module for setting up the API routes"
 
-from flask import Flask, jsonify, request
-from app.views.menu_blueprint import My_blue,order_obj
-from app.views.user_blueprint import user_blue
-from app.views.user_blueprint import token_required
 from app.models.db_user_sql_queries import UserQueries
-
+from app.views.menu_blueprint import My_blue, order_obj
+from flasgger import Swagger, swag_from
+from flask import Flask, jsonify, request
+from app.views. user_blueprint import token_required
+from app.views.user_blueprint import user_blue
 
 My_app = Flask(__name__)
 My_app.register_blueprint(My_blue)
 My_app.register_blueprint(user_blue)
 querry = UserQueries()
+swagg = Swagger(My_app)
+
 
 # A function to fetch all orders
 @My_app.route('/api/v1/orders', methods=['GET'])
 @token_required
+@swag_from('../docs/get_orders.yml')
 def get_all_orders(current_user):
     "A function to fetch all orders"
 
@@ -28,6 +31,7 @@ def get_all_orders(current_user):
 #A function to place_order
 @My_app.route('/api/v1/users/orders', methods=['POST'])
 @token_required
+@swag_from('../docs/place_order.yml')
 def place_order(current_user):
     " a function to place an order"
     new_oder = request.json
@@ -66,6 +70,7 @@ def place_order(current_user):
 #A function to fetch a specific order by uuid
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['GET'])
 @token_required
+@swag_from('../docs/fetch_specific_order.yml')
 def fetch_order(current_user,order_uuid):
     "A function to fetch a specified order by uuid"
     if not querry.check_admin(current_user):
@@ -80,6 +85,7 @@ def fetch_order(current_user,order_uuid):
 #A function that updates order status
 @My_app.route('/api/v1/orders/<order_uuid>', methods=['PUT'])
 @token_required
+@swag_from('../docs/update_order.yml')
 def update_order_status(current_user,order_uuid):
     "A function to update the status of an order by uuid"
     if not querry.check_admin(current_user):
