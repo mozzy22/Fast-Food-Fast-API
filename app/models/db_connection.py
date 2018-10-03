@@ -16,7 +16,7 @@ class DbConn :
                                              host="127.0.0.1",port="5432")
 
                 return self.conn
-            
+
             elif os.getenv('FLASK_ENV') == "heroku":
 
                 url = "postgres://bqpdlaosdiimxb:bd0d1d8e01750838c6c97bad019f507eceac47bfd1dc4ea92693ea62318e4900@ec2-54" \
