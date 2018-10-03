@@ -1,4 +1,5 @@
 import psycopg2
+from urllib.parse import urlparse
 
 class DbConn :
 
@@ -9,12 +10,10 @@ class DbConn :
         "A function to set up database connection"
         # self.conn = None
         try:
-
             self.conn = psycopg2.connect(database="fast_food", user="postgres", password="moses",
                                          host="127.0.0.1",
                                          port="5432")
             return self.conn
-
 
         except Exception :
             print("Dtabase connection error ")
