@@ -10,6 +10,6 @@ security:
       description: Pass in jwt token.
       type: apiKey
       scheme: bearer
-      name: Authorization
+      name: acces-token
       in: header
       bearerFormat: JWT
