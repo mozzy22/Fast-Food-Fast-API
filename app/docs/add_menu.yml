@@ -7,7 +7,7 @@ parameters:
       name: body
       required: true
       type: string
-      description: input the title of the question.
+      description: Add food item.
       schema:
          id: food
          properties:
@@ -24,11 +24,11 @@ responses:
   404:
     description: Duplicate food item.
   400:
-    description: Title is empty.
+    description: Emty input.
 security:
   - JWT:
       description: Pass in jwt token.
       type: apiKey
       scheme: bearer
-      name: Authorization
+      name: acces-token
       in: header
