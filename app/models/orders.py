@@ -2,6 +2,7 @@
 
 import datetime
 import uuid
+import re
 
 from app.models.db_order_sql_queries import DbQueries
 
@@ -135,7 +136,7 @@ class Orders:
         return self.querry.fetch_order(order_uuid)
 
 
-    def validate_input(self,input, validation_data,validation_int_type, validation_str_type ):
+    def validate_input(self,input, validation_data,validation_int_type, validation_str_type ,validate_name):
         "method to validate input"
         error_message = []
         #validating empty input
@@ -150,6 +151,15 @@ class Orders:
         #validating int data type
         for data in validation_int_type :
             self.check_datatype(data, int,input, error_message)
+
+            #validating special characters
+        for data in validate_name:
+            try:
+                match = re.match("^[a-zA-Z]*$", input[data])
+                if match == None:
+                    raise Exception
+            except:
+                error_message.append({"error": data + ' contains invalid characters'})
 
          #validating str datatype
         for data in validation_str_type:

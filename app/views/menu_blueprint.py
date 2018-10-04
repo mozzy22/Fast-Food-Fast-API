@@ -25,7 +25,8 @@ def add_food_items(current_user):
         food_price = new_food["food_price"]
 
         # validating empty input and input data type
-        invalid_input = order_obj.validate_input(new_food, ["food_name", "food_price" ], ["food_price"], ["food_name"])
+        invalid_input = order_obj.validate_input(new_food, ["food_name", "food_price" ], ["food_price"], ["food_name"]
+                                                 ,["food_name"])
         if invalid_input:
             return jsonify(invalid_input), 400
 

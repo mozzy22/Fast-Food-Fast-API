@@ -44,7 +44,7 @@ def place_order(current_user):
 
          #validating empty input and input data type
         invalid_input = order_obj.validate_input(new_oder, ["order_food_id", "order_quantity" ]
-                                               ,["order_quantity","order_food_id"], [ ])
+                                               ,["order_quantity","order_food_id"], [],[])
         if invalid_input:
             return jsonify(invalid_input), 400
 
@@ -89,7 +89,7 @@ def fetch_order(current_user,order_uuid):
 def update_order_status(current_user,order_uuid):
     "A function to update the status of an order by uuid"
     if not querry.check_admin(current_user):
-        return jsonify({"error": "only admin alowed"})
+        return jsonify({"error": "only admin alowed"}), 401
     new_status_obj = request.json
 
         #validating status object and status
@@ -98,7 +98,7 @@ def update_order_status(current_user,order_uuid):
         new_status = new_status_obj["order_status"]
 
         #validating empty input and input data types
-        invalid_input = order_obj.validate_input(new_status_obj, ["order_status"],[],["order_status"])
+        invalid_input = order_obj.validate_input(new_status_obj, ["order_status"],[],["order_status"],["order_status"])
         if invalid_input:
             return jsonify(invalid_input), 400
         updated_order = order_obj.update_order_status(order_uuid, new_status)
@@ -109,6 +109,42 @@ def update_order_status(current_user,order_uuid):
     else:
         message = {"error": "invalid status object . must be {'order_status':}"}
     return jsonify(message), 400
+
+
+@My_app.route('/api/v1/users', methods = ["Get"])
+@token_required
+@swag_from('../docs/all_users.yml')
+def get_all_users(current_user):
+    if not querry.check_admin(current_user):
+        return jsonify({"error": "only admin alowed"}), 401
+    users = []
+    return jsonify(querry.get_all_users(users)), 200
+
+
+#Promoting a user
+@My_app.route('/api/v1/promote', methods = ["PUT"])
+@token_required
+@swag_from('../docs/promote.yml')
+def make_admin(curent_user):
+    prom_user = request.json
+    users = []
+    if not "user_name" in prom_user:
+        return jsonify({"error" : "ivalid key"}) , 400
+    user_name = prom_user["user_name"]
+    invalid_input = order_obj.validate_input(prom_user, ["user_name"], [],["user_name"],["user_name"])
+    if invalid_input:
+        return jsonify(invalid_input), 400
+    exist= False
+    for user in querry.get_all_users(users):
+        if user["user_name"] == user_name:
+            exist = True
+            break
+        else:
+            exist = False
+    if not exist:
+        return jsonify({"error" : user_name + " not found in users"}), 400
+    querry.authorise_user(user_name, True)
+    return jsonify({"Message": user_name + " sucessfuly promoted"}), 201
 
 #error handlers
 @My_app.errorhandler(400)
@@ -128,4 +164,8 @@ def page_not_found(e):
 @My_app.errorhandler(405)
 def method_not_allowed(e):
     return jsonify({"error": "method not allowed"}), 405
+
+@My_app.errorhandler(500)
+def method_not_allowed(e):
+    return jsonify({"error": "internal server error"}), 500
 

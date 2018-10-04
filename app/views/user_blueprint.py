@@ -28,7 +28,8 @@ def user_signup():
 
     invalid_password =  user_obj.validate_password(new_password)
     invalid_input = order_obj.validate_input(new_user,["first_name","last_name","user_name","email", "password"],
-                                           [],["first_name","last_name","user_name","email", "password"] )
+                                           [],["first_name","last_name","user_name","email", "password"]
+                                             ,["first_name","last_name","user_name"])
 
     if invalid_input:
         return jsonify(invalid_input), 400
@@ -51,7 +52,7 @@ def login():
 
       user_name = login_input["user_name"]
       user_password = login_input["password"]
-      invalid_input = order_obj.validate_input(login_input, ["user_name","password"], [], ["user_name","password"])
+      invalid_input = order_obj.validate_input(login_input, ["user_name","password"], [], ["user_name","password"],["user_name"])
 
       if invalid_input:
           return jsonify(invalid_input), 400
@@ -63,6 +64,7 @@ def login():
 
       token = user_obj.generate_auth_token(validate_login_user["user_id"])
       return jsonify({"token": token}) ,200
+
 
 @user_blue.route("/")
 def main():

@@ -1,0 +1,15 @@
+Get all Users
+---
+tags:
+    - Administrator
+responses:
+  200:
+    description: Succesful
+security:
+  - JWT:
+      description: Pass in jwt token.
+      type: apiKey
+      scheme: bearer
+      name: acces-token
+      in: header
+      bearerFormat: JWT
