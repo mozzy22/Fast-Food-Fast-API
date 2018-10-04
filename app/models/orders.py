@@ -155,7 +155,7 @@ class Orders:
             #validating special characters
         for data in validate_name:
             try:
-                match = re.match("^[a-zA-Z]*$", input[data])
+                match = re.match("^[a-zA-Z]*", input[data])
                 if match == None:
                     raise Exception
             except:

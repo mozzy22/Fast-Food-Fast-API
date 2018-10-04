@@ -1,7 +1,13 @@
-Place order
+Fetch Specific order
 ---
 tags:
-    - Orders
+    - Administrator
+parameters:
+    - in: path
+      name: order_uuid
+      required: true
+      type: string
+      description: input order uuid.
 
 responses:
   200:

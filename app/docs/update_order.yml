@@ -3,15 +3,20 @@
 tags:
     - Administrator
 parameters:
+  - in: path
+    name: order_uuid
+    required: true
+    type: string
+    description: input uuid of order
   - in: body
     name: body
     required: true
     type: string
-    description: update order history
+    description: update order
     schema:
           id: update
           properties:
-             status:
+             order_status:
                 type: string
                 default: ok
 responses:
