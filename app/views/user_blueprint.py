@@ -79,7 +79,7 @@ def token_required(func):
             token = request.headers["acces-token"]
 
         if not token:
-            return jsonify({"error": "missing token"}), 404
+            return jsonify({"error": "missing token"}), 401
 
         try :
             data = jwt.decode(token, current_app.config.get('SECRET_KEY') )
