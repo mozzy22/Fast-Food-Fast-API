@@ -76,7 +76,7 @@ class TestPlaceOrder(BaseTestCase):
 
         #test post existing order
         resp9 = self.post_order(order1, token)
-        self.assertEqual(resp9.status_code, 400)
+        self.assertEqual(resp9.status_code, 409)
 
 
 

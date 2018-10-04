@@ -32,7 +32,7 @@ def add_food_items(current_user):
 
         # check whether food item exists
         if order_obj.check_existing_food(food_name) :
-            return jsonify({"error": "food item duplication"}), 400
+            return jsonify({"error": "food item duplication"}), 409
 
          #Adding the food item to te menu
         new_saved_food = order_obj.add_food(food_name, food_price)
