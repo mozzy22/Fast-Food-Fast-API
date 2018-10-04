@@ -26,12 +26,12 @@ class BaseTestCase(unittest.TestCase):
         self.new_user = {
             "first_name": "moses",
             "last_name": "mut",
-            "user_name": "mo1",
+            "user_name": "mos",
             "email": "aa@gmail.com",
             "password": "uuuuu6uu"}
 
         self.resgistered_user = {
-            "user_name": "mo1",
+            "user_name": "mos",
             "password": "uuuuu6uu"}
 
 

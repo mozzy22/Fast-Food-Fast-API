@@ -28,7 +28,7 @@ class TestGetMenu(BaseTestCase):
          self.register_user(self.new_user)
 
          #after user becomes admin
-         self.make_admin("mo1")
+         self.make_admin("mos")
          resp = self.login_user(self.resgistered_user)
          token = str(resp.json["token"])
 

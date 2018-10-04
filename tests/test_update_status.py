@@ -26,8 +26,8 @@ class TestGetOrders(BaseTestCase):
         status1 = {"order_status": "ok"}
         status2 = {"order_status": "yes"}
         status3 = {"order_status": "no"}
-        unknown_status1 = {"order_status": "not sure"}
-        invalidstatus1 = {"order_status": 2}
+        unknown_status1 = {"order_status": "notsure"}
+        invalidstatus1 = {"order_stoatus": "waht"}
         invalid_status_object = {"order": "ok"}
         empty_status = {"order": ""}
 
@@ -39,7 +39,7 @@ class TestGetOrders(BaseTestCase):
         token = str(resp1.json["token"])
 
         #make user admin
-        self.make_admin("mo1")
+        self.make_admin("mos")
 
         #check list length before post
 
