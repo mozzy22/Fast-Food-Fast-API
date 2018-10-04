@@ -29,14 +29,14 @@ class User:
         if len(password)< 6 :
             password_error = {"error" : "weak password. Password must be atleat 6 charactors long"}
             return password_error
-        if not re.search(r'[0-9]', password):
+        if not re.search('[0-9]', password):
             password_error ={"error" : "Weak password. Password should have atleast one integer"}
             return password_error
         return password_error
 
     def validate_email(self, email):
         "function to verify email"
-        match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', email)
+        match = re.match('[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z])', email)
 
         if match == None:
             return False

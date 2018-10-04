@@ -43,7 +43,7 @@ class MyTestCase(BaseTestCase):
         resp1 = self.register_user(user)
         self.assertEqual(resp1.status_code, 201)
 
-        # test regiter a invlid_valid user object
+        # test regiter a invlid_  user object
         resp2 = self.register_user(invalid_user)
         self.assertEqual(resp2.status_code, 400)
 
@@ -64,7 +64,7 @@ class MyTestCase(BaseTestCase):
 
         # test regiter an existing user
         resp6 = self.register_user(user)
-        self.assertEqual(resp6.status_code, 400)
+        self.assertEqual(resp6.status_code, 409)
 
 
     def test_login_user(self):

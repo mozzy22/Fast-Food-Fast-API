@@ -62,27 +62,7 @@ class UserQueries:
         self.conn.commit()
         # self.conn.close()
         return user
-    def get_user_by_id(self, user_id):
-        def get_user(self, user_name):
-            sql = """SELECT * FROM users WHERE  user_id ='{u_id}' ;"""
-            sql_command = sql.format(u_id = user_id)
-            self.cur.execute(sql_command)
-            orders = self.cur.fetchall()
-            user = {}
-            for row in orders:
-                user = {
-                    "user_id": row[0],
-                    "first_name": row[1],
-                    "last_name": row[2],
-                    "user_name": row[3],
-                    "email": row[4],
-                    "password": row[5],
-                    "created_a": row[6],
-                    "admin": row[7]
-                }
-            self.conn.commit()
-            # self.conn.close()
-            return user
+
 
     def authorise_user(self, u_name, admin ):
 

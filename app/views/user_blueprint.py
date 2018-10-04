@@ -39,7 +39,7 @@ def user_signup():
     if invalid_password:
         return jsonify(invalid_password), 400
     if user_obj.check_existing_user(new_user_name,new_email):
-        return jsonify({"error": "user name or email already exists"}), 400
+        return jsonify({"error": "user name or email already exists"}), 409
     return jsonify(user_obj.add_user(new_first_name,new_last_name,new_user_name,new_email,new_password)), 201
     # return jsonify(user_obj.users_list)
 
@@ -79,7 +79,7 @@ def token_required(func):
             token = request.headers["acces-token"]
 
         if not token:
-            return jsonify({"error": "missing token"}), 400
+            return jsonify({"error": "missing token"}), 404
 
         try :
             data = jwt.decode(token, current_app.config.get('SECRET_KEY') )

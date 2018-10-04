@@ -51,7 +51,7 @@ def place_order(current_user):
         # checking whether the order already exists
         if order_obj.check_existing_order(order_food_id, order_client) :
             message1 = {"error": "order duplication"}
-            return jsonify(message1), 400
+            return jsonify(message1), 409
         else:
             #checking whether the food item requested for exists
             if order_obj.check_existing_food(order_food_id):
@@ -105,7 +105,7 @@ def update_order_status(current_user,order_uuid):
         if updated_order:
             return jsonify(updated_order), 200
 
-        message = ({"error": "unable to find order"})
+        message = ({"error": "unable to find order"}), 404
     else:
         message = {"error": "invalid status object . must be {'order_status':}"}
     return jsonify(message), 400
@@ -129,7 +129,7 @@ def make_admin(curent_user):
     prom_user = request.json
     users = []
     if not "user_name" in prom_user:
-        return jsonify({"error" : "ivalid key"}) , 400
+        return jsonify({"error" : "ivalid data"}) , 400
     user_name = prom_user["user_name"]
     invalid_input = order_obj.validate_input(prom_user, ["user_name"], [],["user_name"],["user_name"])
     if invalid_input:
@@ -142,9 +142,9 @@ def make_admin(curent_user):
         else:
             exist = False
     if not exist:
-        return jsonify({"error" : user_name + " not found in users"}), 400
+        return jsonify({"error" : user_name + " not found in users"}), 404
     querry.authorise_user(user_name, True)
-    return jsonify({"Message": user_name + " sucessfuly promoted"}), 201
+    return jsonify({"Message": user_name + " sucessfuly promoted"}), 200
 
 #error handlers
 @My_app.errorhandler(400)

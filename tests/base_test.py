@@ -82,6 +82,15 @@ class BaseTestCase(unittest.TestCase):
     def get_menu(self,token):
         return self.app.get(self.hostname + "menu", headers=({"acces-token": token}))
 
+    def get_all_users(self,token):
+        return self.app.get(self.hostname + "users",headers=({"acces-token": token}) )
+
+    def promote_user(self, user, token):
+        return self.app.put(self.hostname + "promote", data=json.dumps(user),
+                            content_type='application/json', headers=({"acces-token": token}))
+
+
+
 
 
 
