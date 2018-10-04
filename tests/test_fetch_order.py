@@ -32,7 +32,7 @@ class TestGetOrders(BaseTestCase):
         self.assertEqual(resp0.status_code, 401)
 
         #make user admin
-        self.make_admin("mo1")
+        self.make_admin("mos")
 
         #check list length before post
 

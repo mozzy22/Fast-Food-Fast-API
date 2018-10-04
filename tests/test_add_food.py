@@ -35,12 +35,13 @@ class TestCase(BaseTestCase):
 
          #before user is admin
          resp6 = self.login_user(self.resgistered_user)
+         print("this " + str( resp6))
          token = str(resp6.json["token"])
          resp7 = self.post_food(food, token)
          self.assertEqual(resp7.status_code, 401)
 
          #after user becomes admin
-         self.make_admin("mo1")
+         self.make_admin("mos")
          resp = self.login_user(self.resgistered_user)
          token = str(resp.json["token"])
          resp1 = self.post_food(food ,token)

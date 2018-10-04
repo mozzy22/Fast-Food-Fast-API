@@ -40,7 +40,7 @@ class TestPlaceOrder(BaseTestCase):
         token = str(resp1.json["token"])
 
         #make user admin
-        self.make_admin("mo1")
+        self.make_admin("mos")
 
         #check list length before post
 

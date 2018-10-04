@@ -8,34 +8,34 @@ class MyTestCase(BaseTestCase):
         user = {
             "first_name": "moses",
             "last_name": "mut",
-            "user_name": "mo1",
+            "user_name": "mos",
             "email": "aa@gmail.com",
             "password": "uuuuu6uu"}
 
         invalid_user = {
             "first_name": "moses",
-            "user_name": "mo1",
+            "user_name": "mos",
             "email": "aa@gmail.com",
             "password": "uuuuu6uu"}
 
         invalid_user_input = {
             "first_name": "",
             "last_name": "",
-            "user_name": "mo1",
+            "user_name": "mos",
             "email": "aa@gmail.com",
             "password": "uuuuu6uu"}
 
         invalid_user_pass = {
             "first_name": "moses",
             "last_name": "mut",
-            "user_name": "mo1",
+            "user_name": "mos",
             "email": "aa@gmail.com",
             "password": "wwww"}
 
         invalid_user_email = {
             "first_name": "moses",
             "last_name": "mut",
-            "user_name": "mo1",
+            "user_name": "mos",
             "email": "gmail",
             "password": "uuuuu6uu"}
 
@@ -71,12 +71,12 @@ class MyTestCase(BaseTestCase):
         user = {
             "first_name": "moses",
             "last_name": "mut",
-            "user_name": "mo1",
+            "user_name": "mos",
             "email": "aa@gmail.com",
             "password": "uuuuu6uu"}
 
         login_user = {
-        "user_name": "mo1",
+        "user_name": "mos",
         "password": "uuuuu6uu"  }
 
         login_invalid_user = {

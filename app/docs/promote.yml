@@ -1,4 +1,4 @@
- update order status.
+ Promote users.
 ---
 tags:
     - Administrator
@@ -7,18 +7,18 @@ parameters:
     name: body
     required: true
     type: string
-    description: update order history
+    description: enter user name
     schema:
-          id: update
+          id: promote
           properties:
-             status:
+             user_name:
                 type: string
-                default: ok
+                default: moses
 responses:
   201:
-    description: Succesfull updated order.
+    description: Succesfull Promoted user.
   404:
-    description: Order id not found.
+    description: User not found.
   401:
     description: Un authorised user
 security:
