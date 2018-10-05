@@ -16,6 +16,7 @@ querry = UserQueries()
 @user_blue.route('/api/v1/auth/signup', methods =['POST'])
 @swag_from('../docs/signup.yml')
 def user_signup():
+    " a function to signp user"
     new_user =request.json
     if not user_obj.validate_user_obj(new_user):
         return jsonify({"error": "ivalid user obj"}), 400
@@ -46,6 +47,7 @@ def user_signup():
 @user_blue.route('/api/v1/auth/login', methods = ["POST"])
 @swag_from('../docs/login.yml')
 def login():
+      " a function to login user"
       login_input = request.json
       if not user_obj.validate_login_obj( login_input):
            return jsonify({"error":"invalid login object"}), 400

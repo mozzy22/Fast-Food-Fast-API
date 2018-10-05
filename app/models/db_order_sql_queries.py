@@ -10,6 +10,7 @@ class DbQueries():
 
 
     def insert_orders(self, user_id, food_id, order_uuid,created_at,  status, quantity):
+        "a method to insert orders into the orders table"
 
         sql = """INSERT INTO orders ( user_id ,food_id, order_uuid,created_at,  status,  quantity )
                               VALUES ('{user_id}', '{food_id}', '{order_uuid}', '{created_at}', 
@@ -23,6 +24,7 @@ class DbQueries():
 
 
     def get_orders(self, order_list = []):
+        "a methos to fetch orders froorders table"
         order_list.clear()
         sql = """SELECT * FROM orders  ;"""
         self.cur.execute(sql)
@@ -44,6 +46,7 @@ class DbQueries():
         return order_list
 
     def fetch_order(self, uuid):
+        "a methos to fetch specific order"
         sql = """SELECT * FROM orders WHERE order_uuid = '{uuid}' ;"""
         sql_command = sql.format(uuid = uuid)
 
@@ -65,7 +68,7 @@ class DbQueries():
         return order
 
     def update_order_status(self, status ,uuid):
-
+        "a methos to update order status"
         sql = """UPDATE orders  SET status = '{status}' WHERE order_uuid = '{uuid}';"""
 
 
@@ -77,6 +80,7 @@ class DbQueries():
 
 
     def insert_food(self,food_name, food_price):
+        "a methos to insert food object into menu tale"
 
         sql = """INSERT INTO menu ( food_name, food_price )  VALUES ('{food}', '{price}');"""
         sql_command = sql.format(food =food_name, price = food_price)
@@ -85,6 +89,7 @@ class DbQueries():
         # self.conn.close()
 
     def get_food(self, food_name):
+         "a methos to get food "
          sql =  """SELECT * FROM menu WHERE food_name = '{name}' ;"""
          sql_command = sql.format(name = food_name)
          self.cur.execute(sql_command)
@@ -102,6 +107,7 @@ class DbQueries():
          return food
 
     def get_all_foods(self, food_list = []):
+        "a method to get all foods"
         food_list.clear()
         sql = """SELECT * FROM menu ;"""
         self.cur.execute(sql)
@@ -122,9 +128,4 @@ class DbQueries():
     def close_conn(self):
         DbConn().close_DB()
 
-# if __name__ == "__main__":
-#     x = DbQueries()
-#     foodlist = []
-#     oder_list = []
-#     # print(x.get_all_foods(foodlist))
-#     print(x.get_orders(oder_list))
+
