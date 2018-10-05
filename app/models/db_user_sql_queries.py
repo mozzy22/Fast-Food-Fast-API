@@ -8,6 +8,7 @@ class UserQueries:
 
 
     def insert_user(self, first_name, last_name, user_name, email, password, created_at, admin):
+          "a method to  insert user into users table"
           sql = """INSERT INTO  users ( first_name, last_name, user_name, email, password, created_at, admin )
                                      VALUES ('{f_name}', '{l_name}', '{u_name}', '{email}', '{password}',
                                      '{created_at}', '{admin}' )"""
@@ -20,6 +21,7 @@ class UserQueries:
 
 
     def get_all_users(self, users_list = []):
+        "a method to get al users"
         users_list.clear()
         sql = """SELECT * FROM users  ;"""
         self.cur.execute(sql)
@@ -42,6 +44,7 @@ class UserQueries:
         return users_list
 
     def get_user(self, user_name):
+        " a methos to get user"
 
         sql = """SELECT * FROM users WHERE  user_name ='{u_name}' ;"""
         sql_command = sql.format(u_name = user_name)
@@ -65,6 +68,7 @@ class UserQueries:
 
 
     def authorise_user(self, u_name, admin ):
+        " a method to promote user"
 
         sql = """UPDATE users SET admin = '{admin}' WHERE user_name = '{u_name}';"""
 
@@ -75,6 +79,7 @@ class UserQueries:
         # self.conn.close()
 
     def get_user_Order_history(self, user_id):
+        "a metod to get user order history"
         order_list = []
         sql = """SELECT * FROM orders WHERE user_id = '{user_id}' ;"""
         sql_command = sql.format(user_id = user_id)
@@ -97,6 +102,7 @@ class UserQueries:
         return order_list
 
     def check_admin(self, user_id):
+        " a method to chek whether user is admin"
         sql = """SELECT admin FROM users WHERE user_id = '{user_id}' ;"""
         sql_command = sql.format(user_id = user_id)
         self.cur.execute(sql_command)
@@ -110,15 +116,6 @@ class UserQueries:
         return admin
 
     def close_conn(self):
+        " a method to close the datase connection"
         DbConn().close_DB()
 
-# if __name__ == "__main__":
-#       db = UserQueries()
-# #       list = []
-# #     # print(db.get_user("mo"))
-# #     #   print(db.get_all_users(list))
-# # # # #     # db.insert_user("moses","mutesasira", "mogg", "gmaiggl", "afafaf" , "12/11/11", True)
-# # # #
-#       db.authorise_user("mos2", True)
-# # #       print(db.login_user("mozzy3", "moses"))
-#       print(db.check_admin(2))

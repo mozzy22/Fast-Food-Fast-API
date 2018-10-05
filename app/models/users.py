@@ -93,7 +93,7 @@ class User:
 
 
     def generate_auth_token(self, user_id):
-
+        "generating the tocken"
         payload = {
             #user name
             "user_id": user_id,

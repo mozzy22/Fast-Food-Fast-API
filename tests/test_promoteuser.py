@@ -28,3 +28,6 @@ class test_promote_user(BaseTestCase):
         resp3 = self.promote_user(self.new_user, token)
         self.assertEqual(resp3.status_code, 200)
 
+
+
+
