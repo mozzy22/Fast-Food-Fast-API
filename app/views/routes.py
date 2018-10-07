@@ -21,6 +21,7 @@ swagg = Swagger(My_app)
 def get_all_orders(current_user):
     "A function to fetch all orders"
 
+    #admin restriction
     if not querry.check_admin(current_user) :
         return jsonify({"error": "only admin alowed"}), 401
 
@@ -115,6 +116,8 @@ def update_order_status(current_user,order_uuid):
 @token_required
 @swag_from('../docs/all_users.yml')
 def get_all_users(current_user):
+
+    # admin restriction
     if not querry.check_admin(current_user):
         return jsonify({"error": "only admin alowed"}), 401
     users = []
