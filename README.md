@@ -6,26 +6,31 @@ ___
 
 ## APPLICATION  FEATURES
 1. Users can create an account and log in
-2. A user should be able to order for food
-3. The admin should be able to add,edit or delete the fast-food items
-4. The admin should be able to see a list of fast-food items
-5. The Admin user should be able to do the following:
+2. A user can order for food
+3. The admin can add,edit or delete the fast-food items
+4. The admin can see a list of fast-food items
+5. The Admin user can do the following:
   + See a list of orders
   + Accept and decline orders
   + Mark orders as completed
-6. A user should be able to see a history of ordered food
+6. A user can see the history of ordered food
+7. A user is assigned a JWT on login for authourization
 
 ___
 ### See the  Features and their endpoints
 
 | FEATURE | METHOD | END POINT|
 | --- | --- |--- |
+| Signup | POST | api/v1/auth/signup|
+| Login | POST | api/v1/auth/login|
 | Get all orders | GET | api/v1/orders|
-| Place anew order | POST | api/v1/orders|
+| Place anew order | POST | api/v1/users/orders|
+| Get user order hitory | Get | api/v1/users/orders|
 | Fetch a specific order | GET| api/v1/orders/order-uuid|
 | Update an order status | PUT | api/v1/orders/oder-uuid|
+| Get all users | GET | api/v1/users|
 | Fetch all food items on the menu| GET | api/v1/menu|
-| Add food item to menu | POST| api/v1/menu/add|
+| Add food item to menu | POST| api/v1/menu|
 | Index page | GET | /|
 
 ___
