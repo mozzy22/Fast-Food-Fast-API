@@ -1,0 +1,36 @@
+ update order status.
+---
+tags:
+    - Administrator
+parameters:
+  - in: path
+    name: order_uuid
+    required: true
+    type: string
+    description: input uuid of order
+  - in: body
+    name: body
+    required: true
+    type: string
+    description: update order
+    schema:
+          id: update
+          properties:
+             order_status:
+                type: string
+                default: ok
+responses:
+  201:
+    description: Succesfull updated order.
+  404:
+    description: Order id not found.
+  401:
+    description: Un authorised user
+security:
+  - JWT:
+      description: Pass in jwt token.
+      type: apiKey
+      scheme: bearer
+      name: acces-token
+      in: header
+      bearerFormat: JWT

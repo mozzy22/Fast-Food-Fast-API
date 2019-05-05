@@ -1,0 +1,7 @@
+Get get to know about routes
+---
+tags:
+    - Index
+responses:
+  200:
+    description: Succes.

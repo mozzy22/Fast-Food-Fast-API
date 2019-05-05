@@ -1,0 +1,24 @@
+Fetch Specific order
+---
+tags:
+    - Administrator
+parameters:
+    - in: path
+      name: order_uuid
+      required: true
+      type: string
+      description: input order uuid.
+
+responses:
+  200:
+    description: Order found in databse.
+  404:
+    description: No Orde not found in database.
+security:
+  - JWT:
+      description: Pass in jwt token. i.e Bearer <jwt>
+      type: apiKey
+      scheme: bearer
+      name: acces-token
+      in: header
+      bearerFormat: JWT

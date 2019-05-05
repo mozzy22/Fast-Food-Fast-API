@@ -1,0 +1,15 @@
+Order history.
+---
+tags:
+    - Orders
+responses:
+  200:
+    description: Succes
+security:
+  - JWT:
+      description: Pass in jwt token.
+      type: apiKey
+      scheme: bearer
+      name: acces-token
+      in: header
+      bearerFormat: JWT
